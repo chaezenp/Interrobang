@@ -1,4 +1,6 @@
+using UnityEditor.Callbacks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -35,6 +37,14 @@ public class PlayerController : MonoBehaviour
         }
 
         _rb.linearVelocity = velocity;
+
+        //Rotate the player model to face movement direction
+        if (velocity != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(velocity);
+
+            transform.rotation = targetRotation;
+        }    
     }
 
     private void JumpButtonPressed()
