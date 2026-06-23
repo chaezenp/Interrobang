@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpSpeed = 3f;
+    [SerializeField] private float _rotateSpeed = 20f;
+
 
     private PlayerInputController _playerInputController;
     private GroundController _groundController;
@@ -39,12 +41,14 @@ public class PlayerController : MonoBehaviour
         _rb.linearVelocity = velocity;
 
         //Rotate the player model to face movement direction
+        //Not = vec3 zero so it doesnt snap back to forward
         if (velocity != Vector3.zero)
         {
+            //what direction character is facing by movement
             Quaternion targetRotation = Quaternion.LookRotation(velocity);
 
-            transform.rotation = targetRotation;
-        }    
+            //smooth rotation
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotateSpeed * Time.deltaTime);        }    
     }
 
     private void JumpButtonPressed()
