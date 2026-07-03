@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ItemPickupTEMP : MonoBehaviour
 {
-    public string objectiveTag = "Tourist";
+    public string objectiveTag = "Tourists";
 
     private bool isHoldingItem = false;
     private Vector3 originalScale;

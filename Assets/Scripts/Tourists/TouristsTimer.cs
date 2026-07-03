@@ -8,12 +8,12 @@ public class TouristsTimer : MonoBehaviour
 
     public float countdownDuration = 10f; // Time in seconds to go from full to empty
     public bool _recievedItemOnTime = false;
-     public GameObject sliderInstance; 
-     public GameObject check;
-     public GameObject failX;
-     public GameObject _item;
-     public GameObject Player;
-     public GameObject ExplodeDeath;
+    public GameObject sliderInstance; 
+    public GameObject check;
+    public GameObject failX;
+    public GameObject _item;
+    public GameObject Player;
+    //public GameObject ExplodeDeath;
      
 
     private void Start()
@@ -37,12 +37,12 @@ public class TouristsTimer : MonoBehaviour
 
         else
         {
-            Debug.Log("Slider reached zero!");
+            //Debug.Log("Slider reached zero!");
             if (_item != null)
             {
             _recievedItemOnTime = false;
             OnFail(_recievedItemOnTime);
-            Debug.Log("FAIL!");
+            //Debug.Log("FAIL!");
             }
 
         }
@@ -55,11 +55,11 @@ public class TouristsTimer : MonoBehaviour
         {
             failX.SetActive(true);
             sliderInstance.SetActive(false);    
-            if(Player != null && ExplodeDeath != null)
+           /* if(Player != null && ExplodeDeath != null)
             {
             Player.SetActive(false);
             ExplodeDeath.SetActive(true);
-            }
+        }*/
         }
     }
 
