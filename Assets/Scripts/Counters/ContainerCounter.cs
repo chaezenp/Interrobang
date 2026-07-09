@@ -10,9 +10,9 @@ public class ContainerCounter : BaseCounter
         if (!playerController.HasItemObject())
         {
             //Player not carrying anything
-        Transform itemObjectTransform = Instantiate(ItemSO.prefab);
-        itemObjectTransform.GetComponent<ItemObject>().SetItemObjectParent(playerController);
-        } //4:10:00 in video for animation
+            //Spawn in item
+        ItemObject.SpawnItemObject(ItemSO, playerController);
+        } //4:10:00 in video for open counter animation
     }
 
 }

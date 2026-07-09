@@ -8,5 +8,11 @@ public class ItemSO : ScriptableObject
 
     public string objectName;
 
+    public bool isHoldItem;
+
+    public int targetGoal;
+
+    public float timeLimit; 
+
 }
 

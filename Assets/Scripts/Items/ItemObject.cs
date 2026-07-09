@@ -33,4 +33,21 @@ public class ItemObject : MonoBehaviour
     {
         return itemObjectParent;
     }
+
+    public void DestroySelf()
+    {
+        itemObjectParent.ClearItemObject();
+        Destroy(gameObject);
+    }
+
+    public static ItemObject SpawnItemObject(ItemSO itemObjectSO, IItemObjectParent itemObjectParent)
+    {
+        Transform itemObjectTransform = Instantiate(itemObjectSO.prefab);
+        
+        ItemObject itemObject = itemObjectTransform.GetComponent<ItemObject>();
+        
+        itemObject.SetItemObjectParent(itemObjectParent);
+        
+        return itemObject;
+    }
 }
