@@ -44,7 +44,15 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
     private void Start()
     {
         _playerInputController.OnInteractAction += OnInteractAction;
+        _playerInputController.OnAltButtonAction += OnAltButtonAction;
     }
+
+    private void OnAltButtonAction(object sender, EventArgs e)
+    {
+        if(selectedCounter != null)
+        {
+            selectedCounter.InteractAlternate(this);
+        }    }
 
     private void OnInteractAction(object sender, EventArgs e)
     {
@@ -53,43 +61,44 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
             selectedCounter.Interact(this);
         }
 
+
         //Quick test for presentations
-    // Vector2 inputVector = _playerInputController.GetMovementVectorNormalized(); 
-    // Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y); 
+    Vector2 inputVector = _playerInputController.GetMovementVectorNormalized(); 
+    Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y); 
     
-    // if (moveDir != Vector3.zero) 
-    // { 
-    //     lastInteractDir = moveDir; 
-    // }
+    if (moveDir != Vector3.zero) 
+    { 
+        lastInteractDir = moveDir; 
+    }
 
-    // // 1. DROP LOGIC: If we remember a counter and it says we are holding an item, drop it anywhere
-    // if (activeCounter != null && activeCounter.isHoldingitem)
-    // {
-    //     activeCounter.Interact();
+    // 1. DROP LOGIC: If we remember a counter and it says we are holding an item, drop it anywhere
+    if (activeCounter != null && activeCounter.isHoldingitem)
+    {
+        activeCounter.Interact();
         
-    //     // If the item is fully dropped and no longer tracking this counter, clear the memory
-    //     if (!activeCounter.isHoldingitem)
-    //     {
-    //         activeCounter = null;
-    //     }
-    //     return; // Stop running the rest of the function for this frame
-    // }
+        // If the item is fully dropped and no longer tracking this counter, clear the memory
+        if (!activeCounter.isHoldingitem)
+        {
+            activeCounter = null;
+        }
+        return; // Stop running the rest of the function for this frame
+    }
 
-    // // 2. PICKUP LOGIC: If hands are empty, run the Raycast to find a counter
-    // float interactDistance = 2f; 
-    // Vector3 rayOrigin = transform.position + new Vector3(0f, .5f, 0f); 
+    // 2. PICKUP LOGIC: If hands are empty, run the Raycast to find a counter
+    float interactDistance = 2f; 
+    Vector3 rayOrigin = transform.position + new Vector3(0f, .5f, 0f); 
 
-    // if (Physics.Raycast(rayOrigin, lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask)) 
-    // { 
-    //     if(raycastHit.transform.TryGetComponent(out ClearCounter3 clearCounter)) 
-    //     { 
-    //         // Save this counter to our player's memory
-    //         activeCounter = clearCounter; 
+    if (Physics.Raycast(rayOrigin, lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask)) 
+    { 
+        if(raycastHit.transform.TryGetComponent(out ClearCounter3 clearCounter)) 
+        { 
+            // Save this counter to our player's memory
+            activeCounter = clearCounter; 
             
-    //         // Trigger the pickup interact
-    //         activeCounter.Interact(); 
-    //     }
-    // }  
+            // Trigger the pickup interact
+            activeCounter.Interact(); 
+        }
+    }  
     }
 
     private void Update()
@@ -177,6 +186,7 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
     public void SetItemObject(ItemObject itemObject)
     {
         //can add item grab animation
+        //Debug.Log("Playing pick up anim");
         this.itemObject = itemObject;
     }
 

@@ -18,7 +18,7 @@ public class ClearCounter3 : MonoBehaviour
     [SerializeField] Transform handHoldpoint;
     [SerializeField] Transform fillHoldPoint;
 
-    [SerializeField] SphereCollider myCollider;
+    [SerializeField] Collider myCollider;
 
     public string objectiveTag = "Tourists";
     
@@ -33,6 +33,7 @@ public class ClearCounter3 : MonoBehaviour
     public UIButtonTrigger _UiButton;
     public int tourist2COunt = 0;
     public int buttonPressesNeeded = 3;
+    [SerializeField] TouristsTimer TT; 
 
 
     //Temp start
@@ -44,12 +45,27 @@ public class ClearCounter3 : MonoBehaviour
 
 
     }
+
+    private void Update()
+    {
+GameObject obj = GameObject.Find("TEMPSunscreen(Clone)");
+
+if (obj != null)
+{
+
+    //Debug.Log("Found the instantiated object via name!");
+    TT._item = obj;
+    TT.spawnedinYET = true;
+    canGive = true;
+}
+
+    }
+
     public void Interact()
     {
         //Debug.Log("INTERACTS");
         if (thisOBJ != null)
         {
-
         if (isTourist)
             {
                 TalkToTourist();
@@ -79,6 +95,18 @@ public class ClearCounter3 : MonoBehaviour
             TempDropItem();
         }
     }
+
+    if (TT._item != null)
+        {
+            if (canGive)
+            {
+                if (needMultiplePress)
+                {
+                    multiplePresses();
+                }
+                else { Destroy(TT._item); }
+            }
+        }
     }
 
 //Temperary pickup and drop script for presentation whitebox
@@ -134,7 +162,6 @@ public class ClearCounter3 : MonoBehaviour
         if (other.CompareTag(objectiveTag))
         {
             canGive = true;
-            Debug.Log("Can GIve: " + canGive);
                     Debug.Log("Check1: " + needMultiplePress);
 
         }
@@ -149,6 +176,7 @@ public class ClearCounter3 : MonoBehaviour
         touristRequest.SetActive(true);
         touristCountdown.SetActive(true);
         Debug.Log("check3 " +needMultiplePress);
+
     }
 
     private void multiplePresses()
@@ -157,7 +185,7 @@ public class ClearCounter3 : MonoBehaviour
         tourist2COunt = tourist2COunt +1;
         if (tourist2COunt > buttonPressesNeeded)
         {
-            Destroy(gameObject);
+            Destroy(TT._item);
         }
     }
 
