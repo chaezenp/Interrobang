@@ -12,6 +12,11 @@ public class BaseCounter : MonoBehaviour, IItemObjectParent
         Debug.LogError("BaseCounter.Interact();");        
     }
 
+    public virtual void InteractAlternate(PlayerController playerController)
+    {
+        Debug.LogError("BaseCounter.InteractAlternate()");
+    }
+
     public Transform GetItemObjectFollowTransform()
     {
         return counterTopPoint;

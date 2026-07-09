@@ -14,6 +14,8 @@ public class TouristsTimer : MonoBehaviour
     public GameObject _item;
     public GameObject Player;
     //public GameObject ExplodeDeath;
+
+    public bool spawnedinYET = false;
      
 
     private void Start()
@@ -25,10 +27,12 @@ public class TouristsTimer : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log(spawnedinYET + " YETIIII");
         if (slider.value > 0f)
         {
             slider.value -= Time.deltaTime;
-            if (!_item)
+           // Debug.Log(slider.value);
+            if (!_item && spawnedinYET)
             {
             _recievedItemOnTime = true;
             OnWin(_recievedItemOnTime);
