@@ -3678,6 +3678,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581741760}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1651749434 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 671855109544581644, guid: c002b0fa2d5f0db4895a7bf6aa115549, type: 3}
+  m_PrefabInstance: {fileID: 3188072291869889820}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1651749436 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8611750363399687743, guid: c002b0fa2d5f0db4895a7bf6aa115549, type: 3}
+  m_PrefabInstance: {fileID: 3188072291869889820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651749434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 287a7b11d076ace4b908f3b493ca292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+--- !u!114 &1651749440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651749434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9e2aebda1c34fb418bf79b06143a400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetSpecificAnimator
+  TargetAnimator: {fileID: 2060878605}
+  ParameterName: walk
 --- !u!1 &1659037956
 GameObject:
   m_ObjectHideFlags: 0
@@ -4402,7 +4432,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'player v1 '
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3693806362838510125, guid: 977a007c2ff7fef42a3d93fda75ef6d3, type: 3}
+      propertyPath: targetComponent
+      value: 
+      objectReference: {fileID: 1651749436}
+    m_RemovedComponents:
+    - {fileID: 3693806362838510125, guid: 977a007c2ff7fef42a3d93fda75ef6d3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4613,6 +4648,11 @@ CanvasRenderer:
 --- !u!4 &2060878603 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1591226926977696431, guid: 977a007c2ff7fef42a3d93fda75ef6d3, type: 3}
+  m_PrefabInstance: {fileID: 1941864715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2060878605 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 92716560888293936, guid: 977a007c2ff7fef42a3d93fda75ef6d3, type: 3}
   m_PrefabInstance: {fileID: 1941864715}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2071369430
@@ -5136,7 +5176,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5114214905068501482, guid: c002b0fa2d5f0db4895a7bf6aa115549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2060878603}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 671855109544581644, guid: c002b0fa2d5f0db4895a7bf6aa115549, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 1651749440}
   m_SourcePrefab: {fileID: 100100000, guid: c002b0fa2d5f0db4895a7bf6aa115549, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

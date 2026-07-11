@@ -1,12 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// disclamer I used gemini to do some debugging and finding spelling errors all of this is still hand typed put together by me ;P
+
 public class TargetSpecificAnimator : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] private Animator TargetAnimator;
     [SerializeField] private string ParameterName = "Parameter";
+
+    // new part added / testing for holding iteam animation
+    
+    private PlayerController targetComponent; 
+
+    void Start()
+    {
+        targetComponent = GetComponent<PlayerController>();
+    }
+  
 
     void Update()
     {
@@ -51,31 +61,46 @@ public class TargetSpecificAnimator : MonoBehaviour
      
         bool isSprinting = isKeyboardSprinting || isControllerSprinting;
 
+        float moveValue = 0f;
+
      
      //jogging
         if (isMoving && isSprinting)
             {
-                TargetAnimator.SetFloat(ParameterName, 1.0f);
+                moveValue = 1.0f;
             }
       
       //walking
         else if (isMoving)
             {
-                TargetAnimator.SetFloat(ParameterName, 0.5f);
+                moveValue = 0.5f;
             }
      
      //idle
         else
             {
-                TargetAnimator.SetFloat(ParameterName, 0f);
+                moveValue = 0f;
             }
+    // more exsperimenting and testing
+
+        if (targetComponent != null && targetComponent.HasItemObject() == true)
+        {
+            moveValue += 2.0f;
+        }
+
+        TargetAnimator.SetFloat(ParameterName, moveValue);
+
+        // playercontroller.hasItemObject()  is the correct coponent
 
         }
     }
 
-//note to slef bellow
+//note to self bellow
 
 //https://www.youtube.com/watch?v=5mlwvbu1fxQ credit to creator --> RSDevelopment
 
 //above is the video used to help make setup. Note had to convert old method of movment --> GetKey(KeyCod. Example key) to newer 
-// methoud----> (Keyboard.current.example Key.isPressed) made a bunch of changes compaired to the videos for our use case
+// methoud----> (Keyboard.current.example Key.isPressed) note made a bunch of changes compaired to the videos for our use case
+// this is my own code not a copy and not generated.
+
+// disclamer I used gemini to do some debugging and finding spelling errors all of this is still hand typed put together by me JV ;P
