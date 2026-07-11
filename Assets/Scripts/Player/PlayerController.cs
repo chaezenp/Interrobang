@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
     //Real Clear Counter for interactions
     private BaseCounter selectedCounter;
 
+    private DeliveryCounter deliveryCounter;
+
 
     private PlayerInputController _playerInputController;
     private Vector3 lastInteractDir;
@@ -45,6 +47,27 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
     {
         _playerInputController.OnInteractAction += OnInteractAction;
         _playerInputController.OnAltButtonAction += OnAltButtonAction;
+        _playerInputController.OnInteractHoldAction += OnInteractHoldAction;
+        _playerInputController.OnInteractHoldCanceled += OnInteractHoldCanceled;
+
+    }
+
+    private void OnInteractHoldCanceled(object sender, EventArgs e)
+    {
+        //Debug.Log("Button released. Holding down state stopped.");
+        if(selectedCounter != null)
+        {
+            selectedCounter.InteractHoldRelease(this);
+        }
+    }
+
+    private void OnInteractHoldAction(object sender, EventArgs e)
+    {
+        //Debug.Log("Holding down state active.");
+        if(selectedCounter != null)
+        {
+            selectedCounter.InteractHold(this);
+        }
     }
 
     private void OnAltButtonAction(object sender, EventArgs e)
@@ -52,7 +75,8 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
         if(selectedCounter != null)
         {
             selectedCounter.InteractAlternate(this);
-        }    }
+        }    
+    }
 
     private void OnInteractAction(object sender, EventArgs e)
     {
@@ -61,44 +85,6 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
             selectedCounter.Interact(this);
         }
 
-
-        //Quick test for presentations
-    Vector2 inputVector = _playerInputController.GetMovementVectorNormalized(); 
-    Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y); 
-    
-    if (moveDir != Vector3.zero) 
-    { 
-        lastInteractDir = moveDir; 
-    }
-
-    // 1. DROP LOGIC: If we remember a counter and it says we are holding an item, drop it anywhere
-    if (activeCounter != null && activeCounter.isHoldingitem)
-    {
-        activeCounter.Interact();
-        
-        // If the item is fully dropped and no longer tracking this counter, clear the memory
-        if (!activeCounter.isHoldingitem)
-        {
-            activeCounter = null;
-        }
-        return; // Stop running the rest of the function for this frame
-    }
-
-    // 2. PICKUP LOGIC: If hands are empty, run the Raycast to find a counter
-    float interactDistance = 2f; 
-    Vector3 rayOrigin = transform.position + new Vector3(0f, .5f, 0f); 
-
-    if (Physics.Raycast(rayOrigin, lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask)) 
-    { 
-        if(raycastHit.transform.TryGetComponent(out ClearCounter3 clearCounter)) 
-        { 
-            // Save this counter to our player's memory
-            activeCounter = clearCounter; 
-            
-            // Trigger the pickup interact
-            activeCounter.Interact(); 
-        }
-    }  
     }
 
     private void Update()

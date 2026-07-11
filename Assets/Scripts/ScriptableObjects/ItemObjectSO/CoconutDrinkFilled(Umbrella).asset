@@ -17,4 +17,3 @@ MonoBehaviour:
   objectName: CoconutDrinkFilled
   isHoldItem: 0
   targetGoal: 1
-  timeLimit: 5
