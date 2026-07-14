@@ -108,8 +108,8 @@ public class DeliveryCounter : BaseCounter
                 SpawnItemTimer = SpawnItemTimerMax;
 
                 if (!currentItemRequest) {
-                //currentItemRequest = validItemRequestsSO.itemRequestSOList[Random.Range(0, validItemRequestsSO.itemRequestSOList.Count)];
-                SpawnNewItem();
+                currentItemRequest = validItemRequestsSO.itemRequestSOList[Random.Range(0, validItemRequestsSO.itemRequestSOList.Count)];
+                //SpawnNewItem();
                 Debug.Log(currentItemRequest.requestName);
                 TT.itemName = currentItemRequest.requestName;
                 }
@@ -123,6 +123,7 @@ public class DeliveryCounter : BaseCounter
 
     private void SpawnNewItem()
     { //Spawn items in list order
+        // For testing new items
         if (validItemRequestsSO.itemRequestSOList == null || validItemRequestsSO.itemRequestSOList.Count == 0)
         {
             Debug.LogError("The itemRequestSOList is empty!");
