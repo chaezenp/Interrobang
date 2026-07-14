@@ -74,10 +74,10 @@ public class TEMPTouristAnger : MonoBehaviour
         isChasing = false;
         Debug.Log("Game Over! The enemy caught the player!");
         
-        // if(Player != null && explodeDeath != null && !timerSlider.gameObject.activeInHierarchy)
-        //     {
-        //     Player.SetActive(false);
-        //     explodeDeath.SetActive(true);
-        // }
+        if(Player != null && explodeDeath != null && !timerSlider.gameObject.activeInHierarchy)
+            {
+            Player.SetActive(false);
+            explodeDeath.SetActive(true);
+        }
     }
 }

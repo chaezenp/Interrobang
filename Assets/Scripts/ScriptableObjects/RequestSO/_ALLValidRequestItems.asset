@@ -15,3 +15,4 @@ MonoBehaviour:
   itemRequestSOList:
   - {fileID: 11400000, guid: 78bfa7166ff6b8e4f846363fd2e3c819, type: 2}
   - {fileID: 11400000, guid: 8b95c580b30a76d4fb7de45bb06bdfd3, type: 2}
+  - {fileID: 11400000, guid: a51d8e6074942354da14a0950b2ba278, type: 2}
