@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 35a1c13becc25c2479e159c239e22ed3
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 317477
+  packageName: '[ Time Tweaker ] - Fast Iteration'
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/CompileCo/TimeTweaker/Editor/TimeTweaker.asmdef
+  uploadId: 752010

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bab27003f80c9b441963b2164d9c73d8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 317477
+  packageName: '[ Time Tweaker ] - Fast Iteration'
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/CompileCo/TimeTweaker/Editor/Window/TimeTweakerToolbar.cs
+  uploadId: 752010

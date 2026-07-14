@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: ed114c7eb67b4051aa734cbec43482db
+timeCreated: 1744844523
+AssetOrigin:
+  serializedVersion: 1
+  productId: 317477
+  packageName: '[ Time Tweaker ] - Fast Iteration'
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/CompileCo/TimeTweaker/Editor/GUI/TimeTweakerSettings.cs
+  uploadId: 752010

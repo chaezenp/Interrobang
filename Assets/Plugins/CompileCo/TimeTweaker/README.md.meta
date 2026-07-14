@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8ef13be821b1a124b8c780916a129c48
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 317477
+  packageName: '[ Time Tweaker ] - Fast Iteration'
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/CompileCo/TimeTweaker/README.md
+  uploadId: 752010
