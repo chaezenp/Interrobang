@@ -14,7 +14,16 @@ public class BaseCounter : MonoBehaviour, IItemObjectParent
 
     public virtual void InteractAlternate(PlayerController playerController)
     {
-        Debug.LogError("BaseCounter.InteractAlternate()");
+        //Debug.LogError("BaseCounter.InteractAlternate()");
+    }
+
+    public virtual void InteractHold(PlayerController playerController)
+    {
+        //Debug.LogError("BaseCounter.InteractAlternateHold()");
+    }
+    public virtual void InteractHoldRelease(PlayerController playerController)
+    {
+        //Debug.LogWarning("BaseCounter.InteractAlternateRelease()");
     }
 
     public Transform GetItemObjectFollowTransform()
