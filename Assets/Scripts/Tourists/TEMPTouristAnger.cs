@@ -10,6 +10,9 @@ public class TEMPTouristAnger : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private Transform originalPos;
 
+    [SerializeField] private GameObject touristNormalVIS;
+    [SerializeField] private GameObject touristChaseVIS;
+
     public Slider timerSlider;
     public GameObject failX;
     public Transform playerTransform;
@@ -89,7 +92,8 @@ public class TEMPTouristAnger : MonoBehaviour
 
         // FIX: Force the agent to handle its own rotation when actively chasing
         _agent.updateRotation = true;
-
+        touristNormalVIS.SetActive(false);
+        touristChaseVIS.SetActive(true);
         if (Vector3.Distance(_agent.destination, Player.transform.position) > 0.1f)
         {
             _agent.SetDestination(Player.transform.position);
@@ -99,7 +103,10 @@ public class TEMPTouristAnger : MonoBehaviour
     private void ExecuteLoseInterest()
     {
         isChasing = false;
+        hasTriggered = false;
         Debug.Log("Lost Interest");
+        touristChaseVIS.SetActive(false);
+        touristNormalVIS.SetActive(true);
         ResetPosition();
     }
 
@@ -111,7 +118,7 @@ public class TEMPTouristAnger : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") && timerSlider.value <= 0)
+        if (collision.gameObject.CompareTag("Player") && timerSlider.value <= 0 && isChasing)
         {
             CaughtThePlayer();
         }
