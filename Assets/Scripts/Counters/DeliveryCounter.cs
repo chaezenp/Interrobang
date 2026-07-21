@@ -71,6 +71,11 @@ public class DeliveryCounter : BaseCounter
         }
     }
 
+    private void Start()
+    {
+        SpawnItemTimer = Random.Range(2, 5);
+    }
+
     private void Awake()
     {
         if (!canRequest)
@@ -196,6 +201,7 @@ public class DeliveryCounter : BaseCounter
 
     private void ResetProgress()
     {
+        SpawnItemTimerMax = Random.Range(4, 7);
         buttonPressProgress = 0;
         SpawnItemTimer = SpawnItemTimerMax;
         holdProgressTimer = 0f;
