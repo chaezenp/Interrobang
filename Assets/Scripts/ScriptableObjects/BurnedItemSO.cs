@@ -1,11 +1,11 @@
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class FilledItemSO : ScriptableObject
+public class BurnedItemSO : ScriptableObject
 {
 
     public ItemSO input;
     public ItemSO output;
-    public int fillProgressMax;
+    public float burnedProgressMax;
 
 }

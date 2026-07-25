@@ -1,20 +1,26 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ProgressBarUI : MonoBehaviour
 {
-    [SerializeField] private FillStation fillStation;
+    [SerializeField] private GameObject hasProgressObj;
     [SerializeField] private Image barImage;
+
+    private IHasProgress hasProgress;
 
     private void Start()
     {
-        fillStation.OnProgressChanged += FillStation_OnProgressChanged;
+        hasProgress = hasProgressObj.GetComponent<IHasProgress>();
+        if (hasProgress == null)
+        {
+            Debug.LogError("Game Object " + hasProgressObj + " does not have IHasProgress");
+        }
+        hasProgress.OnProgressChanged += HasProgress_OnProgressChanged;
         barImage.fillAmount = 0f;
         Hide();
     }
 
-    private void FillStation_OnProgressChanged(object sender, FillStation.OnProgressChangedEventArgs e)
+    private void HasProgress_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
     {
         barImage.fillAmount = e.progressNormalized;
 

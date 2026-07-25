@@ -21,7 +21,7 @@ public class ItemObject : MonoBehaviour
         this.itemObjectParent = itemObjectParent;
         if (itemObjectParent.HasItemObject())
         {
-            Debug.LogError("IItemObjectParent alrady has object");
+            Debug.LogError("IItemObjectParent already has object");
         }
         itemObjectParent.SetItemObject(this);
 
@@ -49,5 +49,9 @@ public class ItemObject : MonoBehaviour
         itemObject.SetItemObjectParent(itemObjectParent);
         
         return itemObject;
+    }
+    public void SetItemSO(ItemSO newItemSO)
+    {
+        this.itemSO = newItemSO;
     }
 }

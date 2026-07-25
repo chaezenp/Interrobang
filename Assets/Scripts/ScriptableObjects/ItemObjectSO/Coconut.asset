@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffabed4637677d4cb32f9a9caaf7dd6, type: 3}
   m_Name: Coconut
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  prefab: {fileID: 6453577782993785577, guid: 74a68edfc81fbb541b30ea55034d72e5, type: 3}
+  prefab: {fileID: 2827184227872287523, guid: 25ae028d4a48ef04b961a7f030b243bb, type: 3}
   icon: {fileID: 0}
   objectName: Coconut
   isHoldItem: 0
   targetGoal: 1
-  timeLimit: 5

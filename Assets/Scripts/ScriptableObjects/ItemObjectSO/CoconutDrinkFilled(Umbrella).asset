@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffabed4637677d4cb32f9a9caaf7dd6, type: 3}
   m_Name: CoconutDrinkFilled(Umbrella)
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  prefab: {fileID: 2827184227872287523, guid: 25ae028d4a48ef04b961a7f030b243bb, type: 3}
+  prefab: {fileID: 1217755869841973001, guid: 6e54e91fec6ea3d489c1c2532ca37402, type: 3}
   icon: {fileID: 0}
   objectName: CoconutDrinkFilled
   isHoldItem: 0

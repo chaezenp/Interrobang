@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94cb40d4a66018447ba93a1f7a06bdfb, type: 3}
-  m_Name: FilledCoconut
-  m_EditorClassIdentifier: Assembly-CSharp::FilledItemSO
+  m_Script: {fileID: 11500000, guid: e78b410c01bd4ed43884c983af56d6c5, type: 3}
+  m_Name: CoconutDrink
+  m_EditorClassIdentifier: Assembly-CSharp::FillingItemSO
   input: {fileID: 11400000, guid: 31605d43f3cc1a44c9bd7887bba5905a, type: 2}
   output: {fileID: 11400000, guid: 1bad13dca228aef42862d68394769205, type: 2}
   fillProgressMax: 3
