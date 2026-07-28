@@ -8,19 +8,22 @@ public class TouristsTimer : MonoBehaviour
     [SerializeField] private Slider slider;
     public string itemName;
 
-    public float countdownDuration = 10f; // Time in seconds to go from full to empty
     public bool _recievedItemOnTime = false;
     public GameObject sliderInstance; 
     public GameObject requestImage;
     public GameObject check;
     public GameObject failX;
     public GameObject Player;
+
+    public int randTimerMax = 60;
+    public int randTimerMin = 30;
     
     
     //public GameObject ExplodeDeath;
 
     public bool spawnedinYET = false;
     public RawImage requestItemImage;
+    private float countdownDuration = 10f; // Time in seconds to go from full to empty
     private bool _requestActive = false;
     public bool requestActive
     {
@@ -43,6 +46,7 @@ public class TouristsTimer : MonoBehaviour
 
     private void Start()
     {
+        countdownDuration = UnityEngine.Random.Range(30, 60);
         slider.minValue = 0f;
         slider.maxValue = countdownDuration;
         slider.value = countdownDuration;
@@ -85,6 +89,7 @@ public class TouristsTimer : MonoBehaviour
     private void OnRequestStarted()
     {
         timerFinalized = false;
+        countdownDuration = UnityEngine.Random.Range(randTimerMin, randTimerMax);
         slider.value = countdownDuration;
         
         check.SetActive(false);

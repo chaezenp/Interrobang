@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffabed4637677d4cb32f9a9caaf7dd6, type: 3}
   m_Name: Towel
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  prefab: {fileID: 8966703284456548123, guid: ebb31d3f6f3c6314a962d809c47f4416, type: 3}
+  prefab: {fileID: 4877899702373116652, guid: 93c9d311b9d9b3647ab4884e4e065948, type: 3}
   icon: {fileID: 0}
   objectName: Towel
   isHoldItem: 1

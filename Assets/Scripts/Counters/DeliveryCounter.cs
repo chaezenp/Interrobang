@@ -14,6 +14,7 @@ public class DeliveryCounter : BaseCounter
     [SerializeField] private TouristsTimer TT; 
 
 
+    public bool presentTest;
     private bool canRequest = false;
     private float SpawnItemTimer;
     private float SpawnItemTimerMax = 4f;
@@ -33,7 +34,7 @@ public class DeliveryCounter : BaseCounter
                 ItemSO itemSO = playerController.GetItemObject().GetItemObjectSO();
             
                 //TODO: make sure that if walk away
-                
+                Debug.Log(itemSO);
                 if(currentItemRequest != null && !currentItemRequest.itemSOList.Contains(itemSO))
                 {
                     HandleWrongItemPenalty();
@@ -69,6 +70,11 @@ public class DeliveryCounter : BaseCounter
             wrongItemPenaltyApplied = false;
             ResetProgress();
         }
+    }
+
+    private void Start()
+    {
+        SpawnItemTimer = Random.Range(2, 5);
     }
 
     private void Awake()
@@ -108,8 +114,12 @@ public class DeliveryCounter : BaseCounter
                 SpawnItemTimer = SpawnItemTimerMax;
 
                 if (!currentItemRequest) {
+                if (presentTest){
+                SpawnNewItem();
+                }
+                else{
                 currentItemRequest = validItemRequestsSO.itemRequestSOList[Random.Range(0, validItemRequestsSO.itemRequestSOList.Count)];
-                //SpawnNewItem();
+                }
                 Debug.Log(currentItemRequest.requestName);
                 TT.itemName = currentItemRequest.requestName;
                 }
@@ -196,6 +206,7 @@ public class DeliveryCounter : BaseCounter
 
     private void ResetProgress()
     {
+        SpawnItemTimerMax = Random.Range(4, 7);
         buttonPressProgress = 0;
         SpawnItemTimer = SpawnItemTimerMax;
         holdProgressTimer = 0f;

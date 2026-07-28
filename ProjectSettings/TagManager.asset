@@ -20,8 +20,8 @@ TagManager:
   - Ground
   - interactable
   - Interactable
-  - 
-  - 
+  - Not-walkable
+  - Obstacle
   - 
   - 
   - 

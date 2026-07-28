@@ -27,6 +27,7 @@ public class ClearCounter : BaseCounter
             if (playerController.HasItemObject())
             {
                 //Player is carrying something
+
             }
             else
             {

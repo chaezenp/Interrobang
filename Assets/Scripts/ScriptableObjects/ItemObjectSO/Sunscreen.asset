@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffabed4637677d4cb32f9a9caaf7dd6, type: 3}
   m_Name: Sunscreen
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  prefab: {fileID: 4092432947806364131, guid: 5a996e74dfe3d1d488e8b4900880fec8, type: 3}
+  prefab: {fileID: 4879497095909224049, guid: 8df72023f4bdb8f4c987c39258f2dcaa, type: 3}
   icon: {fileID: 0}
   objectName: Sunscreen
   isHoldItem: 0
