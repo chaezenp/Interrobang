@@ -2,19 +2,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 
-public class TEMPTouristAnger : MonoBehaviour
+public class TouristAngerChase : MonoBehaviour
 {
     private NavMeshAgent _agent;
-    [SerializeField] private GameObject Player;
     [SerializeField] private GameObject touristObj;
     [SerializeField] private Transform target;
-    [SerializeField] private Transform originalPos;
 
     [SerializeField] private GameObject touristNormalVIS;
     [SerializeField] private GameObject touristChaseVIS;
 
+    public Transform originalPos;
     public Slider timerSlider;
     public GameObject failX;
+    public GameObject Player;
     public Transform playerTransform;
     public float moveSpeed = 5f;
     public float rotationSpeed = 5f;
@@ -29,6 +29,9 @@ public class TEMPTouristAnger : MonoBehaviour
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
+        playerTransform = Player.transform;
+        target = Player.transform;
+        ResetPosition();
     }
 
     void Update()

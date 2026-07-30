@@ -10,7 +10,7 @@ public class DeliveryCounter : BaseCounter
     // Also need to add a new int to generate random requests to add to list
     // Look at deliver system in video
     [SerializeField] private ItemRequestSO currentItemRequest;
-    [SerializeField] private PlayerController PC;
+    public PlayerController PC;
     [SerializeField] private TouristsTimer TT; 
 
 
@@ -18,6 +18,7 @@ public class DeliveryCounter : BaseCounter
     private bool canRequest = false;
     private float SpawnItemTimer;
     private float SpawnItemTimerMax = 4f;
+    private TouristManager manager;
 
     //For item list
     public int currentItemIndex = 0;
@@ -25,7 +26,6 @@ public class DeliveryCounter : BaseCounter
     private float holdProgressTimer = 0f;
     private bool isPlayerHoldingButtonDown = false;
     private bool wrongItemPenaltyApplied = false;
-
     public override void Interact(PlayerController playerController)
     {
 
@@ -55,6 +55,11 @@ public class DeliveryCounter : BaseCounter
                 //Player not holding anything
 
             }
+    }
+
+    public void Initialize(TouristManager managerReference)
+    {
+        manager = managerReference;
     }
 
     public override void InteractHold(PlayerController playerController)
@@ -108,7 +113,6 @@ public class DeliveryCounter : BaseCounter
         {   
             TT.requestActive = false;
             SpawnItemTimer -= Time.deltaTime;
-            //Debug.Log("Taro " + SpawnItemTimer);
             if (SpawnItemTimer <= 0f)
             {
                 SpawnItemTimer = SpawnItemTimerMax;
@@ -182,8 +186,34 @@ public class DeliveryCounter : BaseCounter
         
     }
 
+    void AddPoints()
+    {
+        string itemName = currentItemRequest.requestName;
+        switch (itemName)
+        {
+            case "Sunscreen":
+                manager.AddScore(5);
+                break;
+            case "CoconutDrinkFilled":
+                manager.AddScore(10);
+                break;
+            case "Towel":
+                manager.AddScore(10);
+                break;
+            case "FullPokeBowl":
+                manager.AddScore(20);
+                break;
+            
+        }
+
+    }
+
     private void CompleteDelivery()
     {
+        if (manager != null)
+        {
+            AddPoints();
+        }
         isPlayerHoldingButtonDown = false;
         currentItemRequest = null;
         TT.DeliverItem(true);
