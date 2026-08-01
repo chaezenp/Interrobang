@@ -931,8 +931,8 @@ MonoBehaviour:
   currentItemRequest: {fileID: 0}
   PC: {fileID: 0}
   TT: {fileID: 4762317448672837477}
-  presentTest: 0
-  currentItemIndex: 3
+  presentTest: 1
+  currentItemIndex: 1
 --- !u!195 &9068958788894195405
 NavMeshAgent:
   m_ObjectHideFlags: 0

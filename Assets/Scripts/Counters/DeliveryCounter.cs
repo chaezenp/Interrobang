@@ -79,7 +79,7 @@ public class DeliveryCounter : BaseCounter
 
     private void Start()
     {
-        SpawnItemTimer = Random.Range(2, 5);
+        SpawnItemTimer = 5;
     }
 
     private void Awake()
