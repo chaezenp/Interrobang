@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SliderAnimationController : MonoBehaviour
+public class NPCsliderContols : MonoBehaviour
 {
 
     [SerializeField] private Animator targetAnimator;
