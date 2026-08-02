@@ -8,7 +8,6 @@ public class RiceCookerCounter : BaseCounter, IHasProgress
         Idle,
         Cooking,
         Cooked,
-        Burned,
     }
 
     public event EventHandler <IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
@@ -18,9 +17,7 @@ public class RiceCookerCounter : BaseCounter, IHasProgress
     
     private State state;
     private float cookingTimer;
-    private float burningTimer;
     private RiceCookerItemSO riceCookerItemSO;
-    private BurnedItemSO burnedItemSO;
 
 
     private void Start()
@@ -49,33 +46,12 @@ public class RiceCookerCounter : BaseCounter, IHasProgress
                     ItemObject.SpawnItemObject(riceCookerItemSO.output, this);
 
                     state = State.Cooked;
-                    burningTimer = 0f;
-                    burnedItemSO = GetBurningItemWithInput(riceCookerItemSO.output);
                 }
                 break;
             case State.Cooked:
-                // burningTimer += Time.deltaTime;
 
-                // OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-                // {
-                //     progressNormalized = burningTimer / burnedItemSO.burnedProgressMax
-                // });
-
-                // if(burningTimer > burnedItemSO.burnedProgressMax)
-                // {
-                //     GetItemObject().DestroySelf();
-                //     ItemObject.SpawnItemObject(burnedItemSO.output, this);
-
-                //     state = State.Burned;
-
-                //     OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-                //     {
-                //         progressNormalized = 0f
-                //     });
-                // }
                 break;
-            case State.Burned:
-                break;
+
         }
     }
         
