@@ -20,4 +20,5 @@ public class NPCsliderContols : MonoBehaviour
         }
     }
 }
-//script to set anim float to the same as slider value.. note to self se
+// writen by JV :P
+//script to set anim float to the same as slider value.. note to self control triggers viya animator float values
