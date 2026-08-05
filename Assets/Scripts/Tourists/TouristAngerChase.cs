@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +24,9 @@ public class TouristAngerChase : MonoBehaviour
     public float interestTimer = 5f;
     public float countdownDuration = 10f;
     public GameObject explodeDeath;
+
+    // When the tourist gives up chasing and returns home
+    public event Action OnChaseEnded;
 
     private bool isChasing = false;
     private bool hasCaughtPlayer = false;
@@ -125,6 +129,8 @@ public class TouristAngerChase : MonoBehaviour
             touristNormalVIS.SetActive(true);
         }
         ResetPosition();
+
+        OnChaseEnded?.Invoke();
     }
 
     private void ResetPosition()

@@ -7,6 +7,7 @@ public class DeliveryCounter : BaseCounter
     [SerializeField] private ValidItemRequestsSO validItemRequestsSO;
     [SerializeField] private ItemRequestSO currentItemRequest;
     [SerializeField] private TouristRequestUI requestUI;
+    [SerializeField] private TouristAngerChase angerChase;
 
     public PlayerController PC;
 
@@ -14,13 +15,10 @@ public class DeliveryCounter : BaseCounter
     public bool presentTest;
     public int currentItemIndex = 0;
 
-
     [Header("Timer")]
     public int randTimerMin = 30;
     public int randTimerMax = 60;
-
     public event Action OnRequestFailed;
-
     public event Action OnRequestSucceeded;
 
     private TouristManager manager;
@@ -28,22 +26,44 @@ public class DeliveryCounter : BaseCounter
     private bool canRequest = false;
     private bool requestActive = false;
     private bool timerFinalized = false;
+    private bool waitingForChaseToEnd = false;
     private float timerValue;
 
     private float spawnItemTimer;
     private float spawnItemTimerMax = 4f;
-
 
     private int buttonPressProgress;
     private float holdProgressTimer = 0f;
     private bool isPlayerHoldingButtonDown = false;
     private bool wrongItemPenaltyApplied = false;
 
+    private void OnEnable()
+    {
+        if (angerChase != null)
+        {
+            angerChase.OnChaseEnded += HandleChaseEnded;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (angerChase != null)
+        {
+            angerChase.OnChaseEnded -= HandleChaseEnded;
+        }
+    }
+
+    private void HandleChaseEnded()
+    {
+        waitingForChaseToEnd = false;
+        spawnItemTimer = spawnItemTimerMax;
+    }
+
     public override void Interact(PlayerController playerController)
     {
         if (!playerController.HasItemObject())
         {
-            // Player not holding anything.
+            // Player not holding anything
             return;
         }
 
@@ -90,7 +110,6 @@ public class DeliveryCounter : BaseCounter
     {
         spawnItemTimer = 5f;
 
-        // Sync initial state from whatever was set on currentItemRequest in the inspector
         canRequest = currentItemRequest == null;
         SetRequestActive(!canRequest);
 
@@ -123,6 +142,9 @@ public class DeliveryCounter : BaseCounter
 
     private void HandleSpawnCountdown()
     {
+        // No item request until not chasing
+        if (waitingForChaseToEnd) return;
+
         spawnItemTimer -= Time.deltaTime;
         if (spawnItemTimer > 0f) return;
 
@@ -210,7 +232,7 @@ public class DeliveryCounter : BaseCounter
             CompleteDelivery();
         }
 
-        // For progress bar — look at fill station.
+        // For progress bar — look at fill station
         float inputProgress = (float)buttonPressProgress / itemSO.targetGoal;
     }
 
@@ -275,9 +297,13 @@ public class DeliveryCounter : BaseCounter
     {
         timerFinalized = true;
         if (requestUI != null) requestUI.ShowFail();
+
+        // Don't start spawning new requests again until chase is done
+        waitingForChaseToEnd = angerChase != null;
+
         OnRequestFailed?.Invoke();
 
-        // Cleared so a new request can start after this one times out.
+        // Cleared so a new request can start after this one times out
         currentItemRequest = null;
 
         ResetProgress();

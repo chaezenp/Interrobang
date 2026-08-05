@@ -930,6 +930,7 @@ MonoBehaviour:
   validItemRequestsSO: {fileID: 11400000, guid: 9a4e30ee65558d04f927f92f49b060fa, type: 2}
   currentItemRequest: {fileID: 0}
   requestUI: {fileID: 4605615876553296370}
+  angerChase: {fileID: 2743152036905555897}
   PC: {fileID: 0}
   presentTest: 0
   currentItemIndex: 1
@@ -977,6 +978,7 @@ MonoBehaviour:
   requestUI: {fileID: 4605615876553296370}
   originalPos: {fileID: 0}
   Player: {fileID: 0}
+  PlayerModel: {fileID: 0}
   playerTransform: {fileID: 0}
   moveSpeed: 10
   rotationSpeed: 5
@@ -1001,8 +1003,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: a8f68b4f5dba35c48bd319e0b71e531c, type: 3}
   - {fileID: 2800000, guid: 7d9990d6a5a9d49478afe05126faed29, type: 3}
   slider: {fileID: 5928961080482323291}
-  requestItemImage: {fileID: 8527371329898177652}
   sliderInstance: {fileID: 1757964926179178691}
+  requestItemImage: {fileID: 8527371329898177652}
   requestImage: {fileID: 6707233974775266184}
   check: {fileID: 2845710675095576770}
   failX: {fileID: 51833957036038723}
