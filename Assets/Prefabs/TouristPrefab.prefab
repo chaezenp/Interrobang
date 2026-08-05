@@ -806,7 +806,7 @@ GameObject:
   - component: {fileID: 875834589418772226}
   - component: {fileID: 9068958788894195405}
   - component: {fileID: 2743152036905555897}
-  - component: {fileID: 4762317448672837477}
+  - component: {fileID: 4605615876553296370}
   m_Layer: 8
   m_Name: TouristPrefab
   m_TagString: Tourists
@@ -929,10 +929,12 @@ MonoBehaviour:
   counterTopPoint: {fileID: 0}
   validItemRequestsSO: {fileID: 11400000, guid: 9a4e30ee65558d04f927f92f49b060fa, type: 2}
   currentItemRequest: {fileID: 0}
+  requestUI: {fileID: 4605615876553296370}
   PC: {fileID: 0}
-  TT: {fileID: 4762317448672837477}
-  presentTest: 1
+  presentTest: 0
   currentItemIndex: 1
+  randTimerMin: 30
+  randTimerMax: 60
 --- !u!195 &9068958788894195405
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -971,9 +973,9 @@ MonoBehaviour:
   target: {fileID: 0}
   touristNormalVIS: {fileID: 8088378682671412354}
   touristChaseVIS: {fileID: 1461789597843655127}
+  deliveryCounter: {fileID: 875834589418772226}
+  requestUI: {fileID: 4605615876553296370}
   originalPos: {fileID: 0}
-  timerSlider: {fileID: 5928961080482323291}
-  failX: {fileID: 51833957036038723}
   Player: {fileID: 0}
   playerTransform: {fileID: 0}
   moveSpeed: 10
@@ -981,7 +983,7 @@ MonoBehaviour:
   interestTimer: 15
   countdownDuration: 10
   explodeDeath: {fileID: 0}
---- !u!114 &4762317448672837477
+--- !u!114 &4605615876553296370
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -990,26 +992,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3495980549690647871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dd0b9fdc134d6346b2afc4ed4bd74cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 081218ae18847164d8a6a4df15ea316a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TEMPTouristsTimer
+  m_EditorClassIdentifier: Assembly-CSharp::TouristRequestUI
   itemTextures:
   - {fileID: 2800000, guid: 4b1947d87eea59e48b7da35950f85a7f, type: 3}
   - {fileID: 2800000, guid: dca4df2abe2dc344aab478dcdd32ece0, type: 3}
   - {fileID: 2800000, guid: a8f68b4f5dba35c48bd319e0b71e531c, type: 3}
   - {fileID: 2800000, guid: 7d9990d6a5a9d49478afe05126faed29, type: 3}
   slider: {fileID: 5928961080482323291}
-  itemName: 
-  _recievedItemOnTime: 0
+  requestItemImage: {fileID: 8527371329898177652}
   sliderInstance: {fileID: 1757964926179178691}
   requestImage: {fileID: 6707233974775266184}
   check: {fileID: 2845710675095576770}
   failX: {fileID: 51833957036038723}
-  Player: {fileID: 0}
-  randTimerMax: 60
-  randTimerMin: 50
-  spawnedinYET: 0
-  requestItemImage: {fileID: 8527371329898177652}
 --- !u!1 &3961912333570862380
 GameObject:
   m_ObjectHideFlags: 0

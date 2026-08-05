@@ -1,60 +1,69 @@
-using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
+using System;
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class DeliveryCounter : BaseCounter
 {
+    [Header("Requests")]
     [SerializeField] private ValidItemRequestsSO validItemRequestsSO;
-    // For multiple Requests need to turn this into a list or a new list variable 
-    // Also need to add a new int to generate random requests to add to list
-    // Look at deliver system in video
     [SerializeField] private ItemRequestSO currentItemRequest;
+    [SerializeField] private TouristRequestUI requestUI;
+
     public PlayerController PC;
-    [SerializeField] private TouristsTimer TT; 
 
-
+    // For presentations: cycle through the request list in order instead of randomly
     public bool presentTest;
-    private bool canRequest = false;
-    private float SpawnItemTimer;
-    private float SpawnItemTimerMax = 4f;
+    public int currentItemIndex = 0;
+
+
+    [Header("Timer")]
+    public int randTimerMin = 30;
+    public int randTimerMax = 60;
+
+    public event Action OnRequestFailed;
+
+    public event Action OnRequestSucceeded;
+
     private TouristManager manager;
 
-    //For item list
-    public int currentItemIndex = 0;
+    private bool canRequest = false;
+    private bool requestActive = false;
+    private bool timerFinalized = false;
+    private float timerValue;
+
+    private float spawnItemTimer;
+    private float spawnItemTimerMax = 4f;
+
+
     private int buttonPressProgress;
     private float holdProgressTimer = 0f;
     private bool isPlayerHoldingButtonDown = false;
     private bool wrongItemPenaltyApplied = false;
+
     public override void Interact(PlayerController playerController)
     {
+        if (!playerController.HasItemObject())
+        {
+            // Player not holding anything.
+            return;
+        }
 
-        if (playerController.HasItemObject())
-            {        
-                ItemSO itemSO = playerController.GetItemObject().GetItemObjectSO();
-            
-                //TODO: make sure that if walk away
-                Debug.Log(itemSO);
-                if(currentItemRequest != null && !currentItemRequest.itemSOList.Contains(itemSO))
-                {
-                    HandleWrongItemPenalty();
-                    return;
-                }
+        ItemSO itemSO = playerController.GetItemObject().GetItemObjectSO();
+        Debug.Log(itemSO);
 
-                if(itemSO.isHoldItem)
-                {
-                    isPlayerHoldingButtonDown = true;
-                }
-                else
-                {
-                    HandleTapLogic(itemSO);
-                }
-            }
-            else
-            {
-                //Player not holding anything
+        if (currentItemRequest != null && !currentItemRequest.itemSOList.Contains(itemSO))
+        {
+            HandleWrongItemPenalty();
+            return;
+        }
 
-            }
+        if (itemSO.isHoldItem)
+        {
+            isPlayerHoldingButtonDown = true;
+        }
+        else
+        {
+            HandleTapLogic(itemSO);
+        }
     }
 
     public void Initialize(TouristManager managerReference)
@@ -69,7 +78,7 @@ public class DeliveryCounter : BaseCounter
 
     public override void InteractHoldRelease(PlayerController playerController)
     {
-        if(isPlayerHoldingButtonDown)
+        if (isPlayerHoldingButtonDown)
         {
             isPlayerHoldingButtonDown = false;
             wrongItemPenaltyApplied = false;
@@ -79,65 +88,104 @@ public class DeliveryCounter : BaseCounter
 
     private void Start()
     {
-        SpawnItemTimer = 5;
-    }
+        spawnItemTimer = 5f;
 
-    private void Awake()
-    {
-        if (!canRequest)
-        {
-            TT.requestActive = true;
-        }
-        else
-        {
-            TT.requestActive = false;
-            TT.itemName = currentItemRequest.requestName;
+        // Sync initial state from whatever was set on currentItemRequest in the inspector
+        canRequest = currentItemRequest == null;
+        SetRequestActive(!canRequest);
 
+        if (requestActive)
+        {
+            BeginRequest();
         }
     }
 
     private void Update()
     {
-        if(isPlayerHoldingButtonDown)
+        if (isPlayerHoldingButtonDown)
         {
             HandleHoldLogic();
         }
 
-        if (!currentItemRequest)
-        {
-            canRequest = true;
-        }
-        else {canRequest = false;}
-        // Randomize getting items
-        if (canRequest)
-        {   
-            TT.requestActive = false;
-            SpawnItemTimer -= Time.deltaTime;
-            if (SpawnItemTimer <= 0f)
-            {
-                SpawnItemTimer = SpawnItemTimerMax;
+        canRequest = currentItemRequest == null;
 
-                if (!currentItemRequest) {
-                if (presentTest){
-                SpawnNewItem();
-                }
-                else{
-                currentItemRequest = validItemRequestsSO.itemRequestSOList[Random.Range(0, validItemRequestsSO.itemRequestSOList.Count)];
-                }
-                Debug.Log(currentItemRequest.requestName);
-                TT.itemName = currentItemRequest.requestName;
-                }
-            }
+        if (canRequest)
+        {
+            SetRequestActive(false);
+            HandleSpawnCountdown();
         }
         else
         {
-            TT.requestActive = true;
+            SetRequestActive(true);
+            HandleRequestCountdown();
+        }
+    }
+
+    private void HandleSpawnCountdown()
+    {
+        spawnItemTimer -= Time.deltaTime;
+        if (spawnItemTimer > 0f) return;
+
+        spawnItemTimer = spawnItemTimerMax;
+
+        if (presentTest)
+        {
+            SpawnNewItem();
+        }
+        else
+        {
+            currentItemRequest = validItemRequestsSO.itemRequestSOList[
+                UnityEngine.Random.Range(0, validItemRequestsSO.itemRequestSOList.Count)];
+        }
+
+        BeginRequest();
+    }
+
+    private void BeginRequest()
+    {
+        if (currentItemRequest == null) return;
+
+        timerFinalized = false;
+        float maxTime = UnityEngine.Random.Range(randTimerMin, randTimerMax);
+        timerValue = maxTime;
+
+        Debug.Log(currentItemRequest.requestName);
+
+        if (requestUI != null)
+        {
+            requestUI.ShowRequest(currentItemRequest.requestName, maxTime);
+        }
+    }
+
+    private void HandleRequestCountdown()
+    {
+        if (timerFinalized) return;
+
+        if (timerValue > 0f)
+        {
+            timerValue -= Time.deltaTime;
+            if (requestUI != null) requestUI.UpdateTimer(timerValue);
+        }
+        else
+        {
+            FailRequest();
+        }
+    }
+
+    private void SetRequestActive(bool active)
+    {
+        if (requestActive == active) return;
+        requestActive = active;
+
+        if (!active && requestUI != null)
+        {
+            requestUI.HideAll();
         }
     }
 
     private void SpawnNewItem()
-    { //Spawn items in list order
-        // For testing new items
+    {
+        // Spawns items in list order
         if (validItemRequestsSO.itemRequestSOList == null || validItemRequestsSO.itemRequestSOList.Count == 0)
         {
             Debug.LogError("The itemRequestSOList is empty!");
@@ -145,27 +193,25 @@ public class DeliveryCounter : BaseCounter
         }
 
         currentItemRequest = validItemRequestsSO.itemRequestSOList[currentItemIndex];
-
         currentItemIndex++;
 
         if (currentItemIndex >= validItemRequestsSO.itemRequestSOList.Count)
         {
-            currentItemIndex = 0; 
+            currentItemIndex = 0;
         }
-
     }
 
     private void HandleTapLogic(ItemSO itemSO)
     {
         buttonPressProgress++;
-        
-        if(buttonPressProgress >= itemSO.targetGoal)
+
+        if (buttonPressProgress >= itemSO.targetGoal)
         {
             CompleteDelivery();
         }
-        //For progress bar look at fill station
-        float inputProgress = (float)buttonPressProgress/ itemSO.targetGoal;
 
+        // For progress bar — look at fill station.
+        float inputProgress = (float)buttonPressProgress / itemSO.targetGoal;
     }
 
     private void HandleHoldLogic()
@@ -177,16 +223,15 @@ public class DeliveryCounter : BaseCounter
         }
 
         ItemSO itemSO = PC.GetItemObject().GetItemObjectSO();
-        
+
         holdProgressTimer += Time.deltaTime;
-        if(holdProgressTimer >= itemSO.targetGoal)
+        if (holdProgressTimer >= itemSO.targetGoal)
         {
             CompleteDelivery();
         }
-        
     }
 
-    void AddPoints()
+    private void AddPoints()
     {
         string itemName = currentItemRequest.requestName;
         switch (itemName)
@@ -203,9 +248,7 @@ public class DeliveryCounter : BaseCounter
             case "FullPokeBowl":
                 manager.AddScore(20);
                 break;
-            
         }
-
     }
 
     private void CompleteDelivery()
@@ -214,21 +257,39 @@ public class DeliveryCounter : BaseCounter
         {
             AddPoints();
         }
+
+        timerFinalized = true;
+        if (requestUI != null) requestUI.ShowSuccess();
+        OnRequestSucceeded?.Invoke();
+
         isPlayerHoldingButtonDown = false;
         currentItemRequest = null;
-        TT.DeliverItem(true);
+
         PC.GetItemObject().DestroySelf();
         Debug.Log("Item Delivered!");
 
         ResetProgress();
     }
 
+    private void FailRequest()
+    {
+        timerFinalized = true;
+        if (requestUI != null) requestUI.ShowFail();
+        OnRequestFailed?.Invoke();
+
+        // Cleared so a new request can start after this one times out.
+        currentItemRequest = null;
+
+        ResetProgress();
+    }
+
     private void HandleWrongItemPenalty()
     {
-        if(!wrongItemPenaltyApplied)
+        if (!wrongItemPenaltyApplied)
         {
             Debug.Log("Wrong Item!");
-            // Timer penalty 
+            wrongItemPenaltyApplied = true;
+            // Timer penalty
             // Sound triggers
             // Visual red outline on timer & shake?
         }
@@ -236,10 +297,9 @@ public class DeliveryCounter : BaseCounter
 
     private void ResetProgress()
     {
-        SpawnItemTimerMax = Random.Range(4, 7);
+        spawnItemTimerMax = UnityEngine.Random.Range(4, 7);
         buttonPressProgress = 0;
-        SpawnItemTimer = SpawnItemTimerMax;
+        spawnItemTimer = spawnItemTimerMax;
         holdProgressTimer = 0f;
-        //UI
     }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.AI;
 
 public class TouristAngerChase : MonoBehaviour
@@ -11,10 +10,13 @@ public class TouristAngerChase : MonoBehaviour
     [SerializeField] private GameObject touristNormalVIS;
     [SerializeField] private GameObject touristChaseVIS;
 
+    [Header("Refs")]
+    [SerializeField] private DeliveryCounter deliveryCounter;
+    [SerializeField] private TouristRequestUI requestUI;
+
     public Transform originalPos;
-    public Slider timerSlider;
-    public GameObject failX;
     public GameObject Player;
+    public GameObject PlayerModel;
     public Transform playerTransform;
     public float moveSpeed = 5f;
     public float rotationSpeed = 5f;
@@ -24,7 +26,6 @@ public class TouristAngerChase : MonoBehaviour
 
     private bool isChasing = false;
     private bool hasCaughtPlayer = false;
-    private bool hasTriggered = false;
 
     private void Start()
     {
@@ -34,12 +35,34 @@ public class TouristAngerChase : MonoBehaviour
         ResetPosition();
     }
 
+    private void OnEnable()
+    {
+        if (deliveryCounter != null)
+        {
+            deliveryCounter.OnRequestFailed += HandleRequestFailed;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (deliveryCounter != null)
+        {
+            deliveryCounter.OnRequestFailed -= HandleRequestFailed;
+        }
+    }
+
+    private void HandleRequestFailed()
+    {
+        isChasing = true;
+        Debug.Log("Request failed! Chase locked and started!");
+    }
+
     void Update()
     {
         // if we caught the player then freeze movement
         if (hasCaughtPlayer) return;
 
-        // if chasing and didnt catch player yet then keep chasing
+        // if chasing and didn't catch player yet then keep chasing
         if (isChasing)
         {
             interestTimer -= Time.deltaTime;
@@ -71,32 +94,21 @@ public class TouristAngerChase : MonoBehaviour
             // Keep agent rotation turned on if it is traveling back home
             _agent.updateRotation = true;
         }
-
-        // if we already triggered the chase once then skip the slider checks
-        if (hasTriggered) return;
-        if (timerSlider == null) return;
-
-        // trigger chase if slider is active and hits zero
-        if (failX.gameObject.activeInHierarchy)
-        {
-            if (timerSlider.value <= 0f)
-            {
-                isChasing = true;
-                hasTriggered = true;
-                Debug.Log("Slider reached zero! Chase locked and started!");
-            }
-        }
     }
 
     void ChasePlayer()
     {
         if (playerTransform == null) return;
-        if (failX != null) failX.gameObject.SetActive(false);
+        if (requestUI != null) requestUI.HideFailIcon();
 
-        // FIX: Force the agent to handle its own rotation when actively chasing
+        // Force the agent to handle its own rotation when actively chasing
         _agent.updateRotation = true;
-        touristNormalVIS.SetActive(false);
-        touristChaseVIS.SetActive(true);
+        if (touristChaseVIS != null && touristNormalVIS != null)
+        {
+            touristNormalVIS.SetActive(false);
+            touristChaseVIS.SetActive(true);
+        }
+
         if (Vector3.Distance(_agent.destination, Player.transform.position) > 0.1f)
         {
             _agent.SetDestination(Player.transform.position);
@@ -106,10 +118,12 @@ public class TouristAngerChase : MonoBehaviour
     private void ExecuteLoseInterest()
     {
         isChasing = false;
-        hasTriggered = false;
         Debug.Log("Lost Interest");
-        touristChaseVIS.SetActive(false);
-        touristNormalVIS.SetActive(true);
+        if (touristChaseVIS != null && touristNormalVIS != null)
+        {
+            touristChaseVIS.SetActive(false);
+            touristNormalVIS.SetActive(true);
+        }
         ResetPosition();
     }
 
@@ -121,7 +135,7 @@ public class TouristAngerChase : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") && timerSlider.value <= 0 && isChasing)
+        if (collision.gameObject.CompareTag("Player") && isChasing)
         {
             CaughtThePlayer();
         }
@@ -132,9 +146,9 @@ public class TouristAngerChase : MonoBehaviour
         hasCaughtPlayer = true;
         isChasing = false;
         Debug.Log("Game Over! The enemy caught the player!");
-        if (Player != null && explodeDeath != null && !timerSlider.gameObject.activeInHierarchy)
+        if (PlayerModel != null && explodeDeath != null)
         {
-            Player.SetActive(false);
+            PlayerModel.SetActive(false);
             explodeDeath.SetActive(true);
         }
     }

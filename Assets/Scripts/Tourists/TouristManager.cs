@@ -7,6 +7,7 @@ public class TouristManager : MonoBehaviour
     private SpawnMilestone currentMilestone = SpawnMilestone.Level1;
 
     public GameObject TouristPrefab;
+    [SerializeField] private GameObject[] TouristsTypes;
     public GameObject Player;
     public GameObject ExplodeDeath;
 
@@ -87,6 +88,9 @@ public class TouristManager : MonoBehaviour
         Transform targetSlot = availableSlots[slotIndex];
         availableSlots.RemoveAt(slotIndex);
 
+        int touristType = Random.Range(0, 3);
+        //GameObject chosenNPC = TouristsTypes[touristType];
+        // TO DO: add chosenNPC into newNPC when make other tourist prefabs if can make it scale with points
         GameObject newNPC = Instantiate(TouristPrefab, spawnStartPosition.position, Quaternion.identity);
         
         DeliveryCounter touristScript = newNPC.GetComponent<DeliveryCounter>();
@@ -136,6 +140,7 @@ public class TouristManager : MonoBehaviour
             {
                 availableSlots.Add(angerScript.originalPos);
                 //Debug.Log("A seat has been freed up!");
+                // TO DO: Make tourist LEAVE
             }
         }
 
