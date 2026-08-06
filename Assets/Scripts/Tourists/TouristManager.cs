@@ -92,6 +92,18 @@ public class TouristManager : MonoBehaviour
         //GameObject chosenNPC = TouristsTypes[touristType];
         // TO DO: add chosenNPC into newNPC when make other tourist prefabs if can make it scale with points
         GameObject newNPC = Instantiate(TouristPrefab, spawnStartPosition.position, Quaternion.identity);
+
+        Transform modelsParent = newNPC.transform.Find("Models");
+
+        if (modelsParent != null)
+        {
+            SelectRandomModel(modelsParent);
+        }
+        else
+        {
+            Debug.LogError("Could not find a child object named 'Models' on the spawned NPC!");
+        }
+
         
         DeliveryCounter touristScript = newNPC.GetComponent<DeliveryCounter>();
         PlayerController PC = Player.GetComponent<PlayerController>();
@@ -103,7 +115,7 @@ public class TouristManager : MonoBehaviour
         if (touristAngerScript != null)
         {
             touristAngerScript.Player = Player;
-            touristAngerScript.originalPos = targetSlot;
+            touristAngerScript.seatPos = targetSlot;
         }
 
         if (ExplodeDeath != null && touristAngerScript != null)
@@ -111,6 +123,21 @@ public class TouristManager : MonoBehaviour
             touristAngerScript.explodeDeath = ExplodeDeath;
         }
         
+    }
+
+    void SelectRandomModel(Transform modelsParent)
+    {
+        int totalModels = modelsParent.childCount;
+        if (totalModels == 0) return;
+
+        // Pick a random child index
+        int randomIndex = Random.Range(0, totalModels);
+
+        // Loop through and activate only the chosen one
+        for (int i = 0; i < totalModels; i++)
+        {
+            modelsParent.GetChild(i).gameObject.SetActive(i == randomIndex);
+        }
     }
 
     public void touristRequestFailed(GameObject touristGo)
@@ -134,11 +161,11 @@ public class TouristManager : MonoBehaviour
             ActiveTourists.Remove(script);
 
         TouristAngerChase angerScript = npcGo.GetComponent<TouristAngerChase>();
-        if (angerScript != null && angerScript.originalPos != null)
+        if (angerScript != null && angerScript.seatPos != null)
         {
-            if (!availableSlots.Contains(angerScript.originalPos))
+            if (!availableSlots.Contains(angerScript.seatPos))
             {
-                availableSlots.Add(angerScript.originalPos);
+                availableSlots.Add(angerScript.seatPos);
                 //Debug.Log("A seat has been freed up!");
                 // TO DO: Make tourist LEAVE
             }

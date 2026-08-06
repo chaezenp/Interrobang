@@ -15,7 +15,7 @@ public class TouristAngerChase : MonoBehaviour
     [SerializeField] private DeliveryCounter deliveryCounter;
     [SerializeField] private TouristRequestUI requestUI;
 
-    public Transform originalPos;
+    public Transform seatPos;
     public GameObject Player;
     public GameObject PlayerModel;
     public Transform playerTransform;
@@ -86,18 +86,23 @@ public class TouristAngerChase : MonoBehaviour
             _agent.updateRotation = false;
 
             // Rotates to face camera
-            Quaternion worldBackwardRotation = Quaternion.LookRotation(-Vector3.forward, Vector3.up);
-            touristObj.transform.rotation = Quaternion.Slerp(
-                touristObj.transform.rotation,
-                worldBackwardRotation,
-                rotationSpeed * Time.deltaTime
-            );
+            RotateToNormalFacing();
         }
         else
         {
             // Keep agent rotation turned on if it is traveling back home
             _agent.updateRotation = true;
         }
+    }
+
+    void RotateToNormalFacing()
+    {
+            Quaternion correctFaceRotation = Quaternion.LookRotation(seatPos.forward, Vector3.up);
+            touristObj.transform.rotation = Quaternion.Slerp(
+                touristObj.transform.rotation,
+                correctFaceRotation,
+                rotationSpeed * Time.deltaTime
+            );
     }
 
     void ChasePlayer()
@@ -136,7 +141,7 @@ public class TouristAngerChase : MonoBehaviour
     private void ResetPosition()
     {
         interestTimer = countdownDuration;
-        _agent.SetDestination(originalPos.transform.position);
+        _agent.SetDestination(seatPos.transform.position);
     }
 
     private void OnCollisionEnter(Collision collision)
