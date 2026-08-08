@@ -969,6 +969,8 @@ MonoBehaviour:
   currentItemIndex: 1
   randTimerMin: 30
   randTimerMax: 60
+  minDeliveriesBeforeLeave: 3
+  maxDeliveriesBeforeLeave: 4
 --- !u!195 &9068958788894195405
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1010,6 +1012,7 @@ MonoBehaviour:
   deliveryCounter: {fileID: 875834589418772226}
   requestUI: {fileID: 4605615876553296370}
   seatPos: {fileID: 0}
+  LeavePos: {fileID: 0}
   Player: {fileID: 0}
   PlayerModel: {fileID: 0}
   playerTransform: {fileID: 0}
@@ -1031,10 +1034,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TouristRequestUI
   itemTextures:
-  - {fileID: 2800000, guid: 4b1947d87eea59e48b7da35950f85a7f, type: 3}
-  - {fileID: 2800000, guid: dca4df2abe2dc344aab478dcdd32ece0, type: 3}
-  - {fileID: 2800000, guid: a8f68b4f5dba35c48bd319e0b71e531c, type: 3}
-  - {fileID: 2800000, guid: 7d9990d6a5a9d49478afe05126faed29, type: 3}
+  - {fileID: 2800000, guid: 9b1052cd96cb728488deded93705a3a5, type: 3}
+  - {fileID: 2800000, guid: 06813455458e0dd4b9f0c97ebceba6df, type: 3}
+  - {fileID: 2800000, guid: a907a90f0b5f4e84c99ae55ed62bf06c, type: 3}
+  - {fileID: 2800000, guid: 24eb91d3adcd10e44a515d1b29f27e2e, type: 3}
   slider: {fileID: 5928961080482323291}
   sliderInstance: {fileID: 1757964926179178691}
   requestItemImage: {fileID: 8527371329898177652}
@@ -1487,14 +1490,14 @@ RectTransform:
   m_GameObject: {fileID: 6707233974775266184}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.83333343, y: 0.33333334, z: 2}
+  m_LocalScale: {x: 1.9999999, y: 0.7999999, z: 4.799999}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8450771071288214131}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000034332275, y: 24.599993}
+  m_AnchoredPosition: {x: 0.000034332275, y: 34}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7133781676031150640
@@ -1525,7 +1528,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 4b1947d87eea59e48b7da35950f85a7f, type: 3}
+  m_Texture: {fileID: 2800000, guid: 9b1052cd96cb728488deded93705a3a5, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

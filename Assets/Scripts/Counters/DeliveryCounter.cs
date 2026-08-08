@@ -18,8 +18,16 @@ public class DeliveryCounter : BaseCounter
     [Header("Timer")]
     public int randTimerMin = 30;
     public int randTimerMax = 60;
+
+    [Header("Leaving")]
+    public int minDeliveriesBeforeLeave = 3;
+    public int maxDeliveriesBeforeLeave = 6;
+
     public event Action OnRequestFailed;
     public event Action OnRequestSucceeded;
+
+    // Fired once this tourist has hit its randomized delivery quota and is ready to leave.
+    public event Action OnReadyToLeave;
 
     private TouristManager manager;
 
@@ -27,7 +35,11 @@ public class DeliveryCounter : BaseCounter
     private bool requestActive = false;
     private bool timerFinalized = false;
     private bool waitingForChaseToEnd = false;
+    private bool isReadyToLeave = false;
     private float timerValue;
+
+    private int successfulDeliveries = 0;
+    private int deliveriesUntilLeave;
 
     private float spawnItemTimer;
     private float spawnItemTimerMax = 4f;
@@ -109,6 +121,7 @@ public class DeliveryCounter : BaseCounter
     private void Start()
     {
         spawnItemTimer = 5f;
+        deliveriesUntilLeave = UnityEngine.Random.Range(minDeliveriesBeforeLeave, maxDeliveriesBeforeLeave);
 
         canRequest = currentItemRequest == null;
         SetRequestActive(!canRequest);
@@ -142,8 +155,8 @@ public class DeliveryCounter : BaseCounter
 
     private void HandleSpawnCountdown()
     {
-        // No item request until not chasing
-        if (waitingForChaseToEnd) return;
+        // No item request until not chasing, and none once the delivery quota is hit.
+        if (waitingForChaseToEnd || isReadyToLeave) return;
 
         spawnItemTimer -= Time.deltaTime;
         if (spawnItemTimer > 0f) return;
@@ -283,6 +296,14 @@ public class DeliveryCounter : BaseCounter
         timerFinalized = true;
         if (requestUI != null) requestUI.ShowSuccess();
         OnRequestSucceeded?.Invoke();
+
+        successfulDeliveries++;
+        if (!isReadyToLeave && successfulDeliveries >= deliveriesUntilLeave)
+        {
+            isReadyToLeave = true;
+            requestUI.HideAll();
+            OnReadyToLeave?.Invoke();
+        }
 
         isPlayerHoldingButtonDown = false;
         currentItemRequest = null;

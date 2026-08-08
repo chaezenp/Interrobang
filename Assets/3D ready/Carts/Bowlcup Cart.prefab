@@ -567,7 +567,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6020285730030219063}
   m_Layer: 0
-  m_Name: cart 2
+  m_Name: Bowlcup Cart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

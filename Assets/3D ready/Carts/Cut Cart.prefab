@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7087176367539095360}
   m_Layer: 0
-  m_Name: cart 5
+  m_Name: Cut Cart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -3,7 +3,7 @@ using UnityEngine;
 public class BaseCounter : MonoBehaviour, IItemObjectParent
 {
 
-    [SerializeField] private Transform counterTopPoint;
+    public Transform counterTopPoint;
 
     private ItemObject itemObject;
 

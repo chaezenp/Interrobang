@@ -5,7 +5,10 @@ public class SelectedCounterVisual : MonoBehaviour
 {
 
     [SerializeField] private BaseCounter baseCounter;
-    [SerializeField] private GameObject[] visualGameObjectArray;
+    //[SerializeField] private GameObject[] visualGameObjectArray;
+    [SerializeField] private Animator objectAnimator;
+
+    [SerializeField] private string animationBoolName = "Parameter";
 
     private void Start()
     {
@@ -26,18 +29,30 @@ public class SelectedCounterVisual : MonoBehaviour
 
     private void Show()
     {
-        foreach (GameObject visualGameObject in visualGameObjectArray)
-        {
-            visualGameObject.SetActive(true);
-        }
+        // foreach (GameObject visualGameObject in visualGameObjectArray)
+        // {
+        //     visualGameObject.SetActive(true);
+        // }
+        SetAnimationState(true);
+
     }
 
     private void Hide()
     {
-        foreach (GameObject visualGameObject in visualGameObjectArray)
-        {
-            visualGameObject.SetActive(false);
-        }
+        // foreach (GameObject visualGameObject in visualGameObjectArray)
+        // {
+        //     visualGameObject.SetActive(false);
+        // }
+        SetAnimationState(false);
+
     }
 
+    private void SetAnimationState(bool state)
+
+    {
+        if (objectAnimator != null)
+        {
+            objectAnimator.SetBool(animationBoolName, state);
+        }
+    }
 }

@@ -64,6 +64,7 @@ public class TouristRequestUI : MonoBehaviour
     // No active request at all
     public void HideAll()
     {
+        //slider.value = 0f;
         if (requestImage != null) requestImage.SetActive(false);
         if (sliderInstance != null) sliderInstance.SetActive(false);
     }

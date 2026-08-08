@@ -13,30 +13,51 @@ public class TouristManager : MonoBehaviour
 
     [SerializeField] private Transform spawnStartPosition;
     [SerializeField] private Transform[] seatPositions;
+    [SerializeField] private Transform leaveEndPosition;
     [SerializeField] private Transform playerTransform;
 
     public int failedRequestsCount = 0;
     public int failsUntilChase = 3;
     public float timerAddPoints = 0;
+    public float timeNeedSurvivePoints = 20f;
 
+    [Header("Leaving")]
+    public int minDeliveriesBeforeLeave = 3;
+    public int maxDeliveriesBeforeLeave = 6;
+    public float spawnCooldownAfterLeave = 5f;
+
+    [Header("Active Tourist Target")]
+    // How many tourists should be active at once at each milestone.
+    public int[] targetActiveTourists = new int[] { 1, 2, 3, 4, 5 };
 
     private List<Transform> availableSlots = new List<Transform>();
     private List<DeliveryCounter> ActiveTourists = new List<DeliveryCounter>();
     private bool gameModeIsChase = false;
     private int totalPoints = 0;
+    private float spawnCooldownTimer = 0f;
 
     private void Start()
     {
         availableSlots.AddRange(seatPositions);
-        SpawnTourist();
+        CheckPointsAndSlots();
     }
 
     private void Update()
     {
         timerAddPoints += Time.deltaTime;
-        if (timerAddPoints > 7)
+        if (timerAddPoints > timeNeedSurvivePoints)
         {
             AddScore(10);
+        }
+
+        if (spawnCooldownTimer > 0f)
+        {
+            spawnCooldownTimer -= Time.deltaTime;
+            if (spawnCooldownTimer <= 0f)
+            {
+                spawnCooldownTimer = 0f;
+                CheckPointsAndSlots();
+            }
         }
     }
 
@@ -44,7 +65,7 @@ public class TouristManager : MonoBehaviour
     {
         timerAddPoints = 0;
         totalPoints += amount;
-        Debug.Log($"Score updated: {totalPoints}. Checking milestones...");
+        //Debug.Log($"Score updated: {totalPoints}. Checking milestones...");
         
         CheckPointsAndSlots();
     }
@@ -52,34 +73,56 @@ public class TouristManager : MonoBehaviour
     private void CheckPointsAndSlots()
     {
         if (gameModeIsChase) return;
+        if (spawnCooldownTimer > 0f) return;
+
+        UpdateMilestone();
+
         if (availableSlots.Count == 0)
         {
-            //Debug.Log("Score reached milestone but seats are full, waiting for an empty seat");
+            //Debug.Log("Want to spawn but seats are full, waiting for an empty seat");
             return;
         }
 
-        switch (currentMilestone)
+        int target = GetTargetActiveTourists();
+        if (ActiveTourists.Count < target)
         {
-            case SpawnMilestone.Level1 when totalPoints >= 10:
-                currentMilestone = SpawnMilestone.Level2;
-                SpawnTourist();
-                break;
-
-            case SpawnMilestone.Level2 when totalPoints >= 30:
-                currentMilestone = SpawnMilestone.Level3;
-                SpawnTourist();
-                break;
-
-            case SpawnMilestone.Level3 when totalPoints >= 60:
-                currentMilestone = SpawnMilestone.Level4;
-                SpawnTourist();
-                break;
-
-            case SpawnMilestone.Level4 when totalPoints >= 100:
-                currentMilestone = SpawnMilestone.Finished;
-                SpawnTourist();
-                break;
+            SpawnTourist();
+            // Space out spawns
+            spawnCooldownTimer = spawnCooldownAfterLeave;
         }
+    }
+
+    private void UpdateMilestone()
+    {
+        while (true)
+        {
+            switch (currentMilestone)
+            {
+                case SpawnMilestone.Level1 when totalPoints >= 49:
+                    currentMilestone = SpawnMilestone.Level2;
+                    continue;
+
+                case SpawnMilestone.Level2 when totalPoints >= 99:
+                    currentMilestone = SpawnMilestone.Level3;
+                    continue;
+
+                case SpawnMilestone.Level3 when totalPoints >= 149:
+                    currentMilestone = SpawnMilestone.Level4;
+                    continue;
+
+                case SpawnMilestone.Level4 when totalPoints >= 199:
+                    currentMilestone = SpawnMilestone.Finished;
+                    continue;
+            }
+            break;
+        }
+    }
+
+    private int GetTargetActiveTourists()
+    {
+        if (targetActiveTourists == null || targetActiveTourists.Length == 0) return 1;
+        int index = Mathf.Clamp((int)currentMilestone, 0, targetActiveTourists.Length - 1);
+        return targetActiveTourists[index];
     }
 
     private void SpawnTourist()
@@ -88,9 +131,6 @@ public class TouristManager : MonoBehaviour
         Transform targetSlot = availableSlots[slotIndex];
         availableSlots.RemoveAt(slotIndex);
 
-        int touristType = Random.Range(0, 3);
-        //GameObject chosenNPC = TouristsTypes[touristType];
-        // TO DO: add chosenNPC into newNPC when make other tourist prefabs if can make it scale with points
         GameObject newNPC = Instantiate(TouristPrefab, spawnStartPosition.position, Quaternion.identity);
 
         Transform modelsParent = newNPC.transform.Find("Models");
@@ -109,6 +149,9 @@ public class TouristManager : MonoBehaviour
         PlayerController PC = Player.GetComponent<PlayerController>();
         touristScript.PC = PC;
         touristScript.Initialize(this);
+        touristScript.minDeliveriesBeforeLeave = minDeliveriesBeforeLeave;
+        touristScript.maxDeliveriesBeforeLeave = maxDeliveriesBeforeLeave;
+        touristScript.OnReadyToLeave += () => OnNPCLeft(newNPC);
         ActiveTourists.Add(touristScript);
 
         TouristAngerChase touristAngerScript = newNPC.GetComponent<TouristAngerChase>();
@@ -116,6 +159,7 @@ public class TouristManager : MonoBehaviour
         {
             touristAngerScript.Player = Player;
             touristAngerScript.seatPos = targetSlot;
+            touristAngerScript.LeavePos = leaveEndPosition;
         }
 
         if (ExplodeDeath != null && touristAngerScript != null)
@@ -166,11 +210,12 @@ public class TouristManager : MonoBehaviour
             if (!availableSlots.Contains(angerScript.seatPos))
             {
                 availableSlots.Add(angerScript.seatPos);
-                //Debug.Log("A seat has been freed up!");
-                // TO DO: Make tourist LEAVE
+
+                angerScript.LeaveHotel();
             }
         }
 
+        spawnCooldownTimer = spawnCooldownAfterLeave;
 
         CheckPointsAndSlots();
     }

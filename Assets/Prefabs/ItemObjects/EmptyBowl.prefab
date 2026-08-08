@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5208917387686294009}
   - component: {fileID: 3093484273801676115}
   - component: {fileID: 5339764587348421746}
+  - component: {fileID: 1128819005946619156}
   m_Layer: 0
   m_Name: EmptyBowl
   m_TagString: Pickable
@@ -74,6 +75,19 @@ MonoBehaviour:
   bowlProgressionSOList:
   - {fileID: 11400000, guid: d050821fa3580524abca5cfe134dde9a, type: 2}
   - {fileID: 11400000, guid: dc929ce56bc2b8540b616bb8bf4c55c4, type: 2}
+--- !u!114 &1128819005946619156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716873041392527915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9ee688474743ce41b140085fd61fd0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemObject
+  itemSO: {fileID: 11400000, guid: 85d5ce538737b9d41ad0c3de7b8dad8a, type: 2}
 --- !u!1001 &5822712549124833176
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,12 +97,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 5208917387686294009}
     m_Modifications:
     - target: {fileID: 5788068469501950833, guid: 3ba0a340f598f544387ba5a588de165d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788068469501950833, guid: 3ba0a340f598f544387ba5a588de165d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788068469501950833, guid: 3ba0a340f598f544387ba5a588de165d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788068469501950833, guid: 3ba0a340f598f544387ba5a588de165d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5788068469501950833, guid: 3ba0a340f598f544387ba5a588de165d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.137
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5788068469501950833, guid: 3ba0a340f598f544387ba5a588de165d, type: 3}
       propertyPath: m_LocalPosition.z

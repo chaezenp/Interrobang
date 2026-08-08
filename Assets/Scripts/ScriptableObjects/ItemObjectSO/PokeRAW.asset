@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffabed4637677d4cb32f9a9caaf7dd6, type: 3}
   m_Name: PokeRAW
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  prefab: {fileID: 3619780749237604942, guid: 3f87261b33fe1dd4caf4ab5b7ab37ffd, type: 3}
+  prefab: {fileID: 6850039463853667357, guid: 6e8375fb4f734fd41b8a363b5c8cbcce, type: 3}
   icon: {fileID: 0}
   objectName: PokeRAW
   isHoldItem: 0

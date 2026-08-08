@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7767310289576809296}
   m_Layer: 0
-  m_Name: cart 6
+  m_Name: RiceCook Cart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

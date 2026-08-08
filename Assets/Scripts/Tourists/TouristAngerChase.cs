@@ -16,6 +16,7 @@ public class TouristAngerChase : MonoBehaviour
     [SerializeField] private TouristRequestUI requestUI;
 
     public Transform seatPos;
+    public Transform LeavePos;
     public GameObject Player;
     public GameObject PlayerModel;
     public Transform playerTransform;
@@ -28,7 +29,11 @@ public class TouristAngerChase : MonoBehaviour
     // When the tourist gives up chasing and returns home
     public event Action OnChaseEnded;
 
+    // Before this tourist is destroyed after leaving
+    public event Action OnLeftHotel;
+
     private bool isChasing = false;
+    private bool isLeaving = false;
     private bool hasCaughtPlayer = false;
 
     private void Start()
@@ -57,6 +62,7 @@ public class TouristAngerChase : MonoBehaviour
 
     private void HandleRequestFailed()
     {
+        if (isLeaving) return;
         isChasing = true;
         Debug.Log("Request failed! Chase locked and started!");
     }
@@ -65,6 +71,13 @@ public class TouristAngerChase : MonoBehaviour
     {
         // if we caught the player then freeze movement
         if (hasCaughtPlayer) return;
+
+        // if leaving, walk to the leave position and despawn on arrival
+        if (isLeaving)
+        {
+            HandleLeaving();
+            return;
+        }
 
         // if chasing and didn't catch player yet then keep chasing
         if (isChasing)
@@ -142,6 +155,32 @@ public class TouristAngerChase : MonoBehaviour
     {
         interestTimer = countdownDuration;
         _agent.SetDestination(seatPos.transform.position);
+    }
+
+    public void LeaveHotel()
+    {
+        isChasing = false;
+        isLeaving = true;
+        interestTimer = countdownDuration;
+        
+
+        if (touristChaseVIS != null && touristNormalVIS != null)
+        {
+            touristChaseVIS.SetActive(false);
+            touristNormalVIS.SetActive(true);
+        }
+
+        _agent.updateRotation = true;
+        _agent.SetDestination(LeavePos.transform.position);
+    }
+
+    private void HandleLeaving()
+    {
+        if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
+        {
+            OnLeftHotel?.Invoke();
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

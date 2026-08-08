@@ -12,6 +12,7 @@ public class RiceCookerCounter : BaseCounter, IHasProgress
 
     public event EventHandler <IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
 
+    [SerializeField] private Transform CounterTopPoint2;
     [SerializeField] private RiceCookerItemSO[] riceCookerItemSOArray;
     [SerializeField] private BurnedItemSO[] burnedItemSOArray;
     
@@ -43,6 +44,7 @@ public class RiceCookerCounter : BaseCounter, IHasProgress
                 if(cookingTimer > riceCookerItemSO.cookProgressMax)
                 {
                     GetItemObject().DestroySelf();
+                    counterTopPoint = CounterTopPoint2;
                     ItemObject.SpawnItemObject(riceCookerItemSO.output, this);
 
                     state = State.Cooked;

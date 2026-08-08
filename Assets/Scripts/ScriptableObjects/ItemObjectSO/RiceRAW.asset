@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffabed4637677d4cb32f9a9caaf7dd6, type: 3}
   m_Name: RiceRAW
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  prefab: {fileID: 6645088629841337872, guid: 2ff4858e89a19eb49991432374206da2, type: 3}
+  prefab: {fileID: 4416461090164357425, guid: b5a35aa6d1482f34a867ffb16ebecdc9, type: 3}
   icon: {fileID: 0}
   objectName: RiceRaw
   isHoldItem: 0
