@@ -121,7 +121,13 @@ public class DeliveryCounter : BaseCounter
     private void Start()
     {
         spawnItemTimer = 5f;
+        if (!presentTest){
         deliveriesUntilLeave = UnityEngine.Random.Range(minDeliveriesBeforeLeave, maxDeliveriesBeforeLeave);
+        }
+        else
+        {
+            deliveriesUntilLeave = 4;
+        }
 
         canRequest = currentItemRequest == null;
         SetRequestActive(!canRequest);

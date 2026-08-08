@@ -965,8 +965,8 @@ MonoBehaviour:
   requestUI: {fileID: 4605615876553296370}
   angerChase: {fileID: 2743152036905555897}
   PC: {fileID: 0}
-  presentTest: 0
-  currentItemIndex: 1
+  presentTest: 1
+  currentItemIndex: 0
   randTimerMin: 30
   randTimerMax: 60
   minDeliveriesBeforeLeave: 3

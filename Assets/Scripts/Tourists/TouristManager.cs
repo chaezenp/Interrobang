@@ -18,8 +18,9 @@ public class TouristManager : MonoBehaviour
 
     public int failedRequestsCount = 0;
     public int failsUntilChase = 3;
-    public float timerAddPoints = 0;
+    private float timerAddPoints = 0;
     public float timeNeedSurvivePoints = 20f;
+    [SerializeField] private int survivedPoints = 10;
 
     [Header("Leaving")]
     public int minDeliveriesBeforeLeave = 3;
@@ -47,7 +48,7 @@ public class TouristManager : MonoBehaviour
         timerAddPoints += Time.deltaTime;
         if (timerAddPoints > timeNeedSurvivePoints)
         {
-            AddScore(10);
+            AddScore(survivedPoints);
         }
 
         if (spawnCooldownTimer > 0f)
