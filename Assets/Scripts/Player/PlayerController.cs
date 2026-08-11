@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
             Vector3 rayOrigin = transform.position + new Vector3(0f, .5f, 0f); 
             //Debug.DrawRay(rayOrigin, lastInteractDir * interactDistance, Color.red);
             //Raycast to hit counter/Interactables
-            if (Physics.Raycast(rayOrigin, lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask))
+            if (Physics.Raycast(rayOrigin, lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask, QueryTriggerInteraction.Collide))
             {
                 if(raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
                 {
