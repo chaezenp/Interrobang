@@ -1,15 +1,13 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.XR;
 
 public class TouristAngerChase : MonoBehaviour
 {
     private NavMeshAgent _agent;
     [SerializeField] private GameObject touristObj;
     [SerializeField] private Transform target;
-
-    [SerializeField] private GameObject touristNormalVIS;
-    [SerializeField] private GameObject touristChaseVIS;
 
     [Header("Refs")]
     [SerializeField] private DeliveryCounter deliveryCounter;
@@ -19,7 +17,9 @@ public class TouristAngerChase : MonoBehaviour
     public Transform LeavePos;
     public GameObject Player;
     public GameObject PlayerModel;
+    public GameObject playerHand;
     public Transform playerTransform;
+    public NPCsliderContols animBool;
     public float moveSpeed = 5f;
     public float rotationSpeed = 5f;
     public float interestTimer = 5f;
@@ -36,12 +36,29 @@ public class TouristAngerChase : MonoBehaviour
     private bool isLeaving = false;
     private bool hasCaughtPlayer = false;
 
+
     private void Start()
     {
+        LinkAnimationBool();
         _agent = GetComponent<NavMeshAgent>();
         playerTransform = Player.transform;
         target = Player.transform;
         ResetPosition();
+    }
+
+    void LinkAnimationBool()
+    {
+        Transform modelsParent = touristObj.transform.Find("Models");
+
+            foreach (Transform child in modelsParent)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    animBool = child.GetComponent<NPCsliderContols>();
+                    
+                    break;
+                }
+            }
     }
 
     private void OnEnable()
@@ -64,6 +81,7 @@ public class TouristAngerChase : MonoBehaviour
     {
         if (isLeaving) return;
         isChasing = true;
+        animBool.isChasingPlayer(true);
         Debug.Log("Request failed! Chase locked and started!");
     }
 
@@ -125,11 +143,6 @@ public class TouristAngerChase : MonoBehaviour
 
         // Force the agent to handle its own rotation when actively chasing
         _agent.updateRotation = true;
-        if (touristChaseVIS != null && touristNormalVIS != null)
-        {
-            touristNormalVIS.SetActive(false);
-            touristChaseVIS.SetActive(true);
-        }
 
         if (Vector3.Distance(_agent.destination, Player.transform.position) > 0.1f)
         {
@@ -141,12 +154,10 @@ public class TouristAngerChase : MonoBehaviour
     {
         isChasing = false;
         Debug.Log("Lost Interest");
-        if (touristChaseVIS != null && touristNormalVIS != null)
-        {
-            touristChaseVIS.SetActive(false);
-            touristNormalVIS.SetActive(true);
-        }
+
         ResetPosition();
+
+        animBool.isChasingPlayer(false);
 
         OnChaseEnded?.Invoke();
     }
@@ -161,14 +172,8 @@ public class TouristAngerChase : MonoBehaviour
     {
         isChasing = false;
         isLeaving = true;
+        animBool.isChasingPlayer(true);
         interestTimer = countdownDuration;
-        
-
-        if (touristChaseVIS != null && touristNormalVIS != null)
-        {
-            touristChaseVIS.SetActive(false);
-            touristNormalVIS.SetActive(true);
-        }
 
         _agent.updateRotation = true;
         _agent.SetDestination(LeavePos.transform.position);
@@ -195,11 +200,15 @@ public class TouristAngerChase : MonoBehaviour
     {
         hasCaughtPlayer = true;
         isChasing = false;
+        TouristManager.Instance.isPlayerCaught();
         Debug.Log("Game Over! The enemy caught the player!");
-        if (PlayerModel != null && explodeDeath != null)
+        if (PlayerModel != null && explodeDeath != null && playerHand != null)
         {
             PlayerModel.SetActive(false);
+            playerHand.SetActive(false);
             explodeDeath.SetActive(true);
         }
+        HahaluGameManager.Instance.IsPlayerCaught();
+
     }
 }

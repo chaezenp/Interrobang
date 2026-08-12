@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
 
     private void OnInteractHoldCanceled(object sender, EventArgs e)
     {
+        if (!HahaluGameManager.Instance.IsGamePlaying()) return;
+
         //Debug.Log("Button released. Holding down state stopped.");
         if(selectedCounter != null)
         {
@@ -63,6 +65,8 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
 
     private void OnInteractHoldAction(object sender, EventArgs e)
     {
+        if (!HahaluGameManager.Instance.IsGamePlaying()) return;
+
         //Debug.Log("Holding down state active.");
         if(selectedCounter != null)
         {
@@ -72,6 +76,8 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
 
     private void OnAltButtonAction(object sender, EventArgs e)
     {
+        if (!HahaluGameManager.Instance.IsGamePlaying()) return;
+
         if(selectedCounter != null)
         {
             selectedCounter.InteractAlternate(this);
@@ -80,6 +86,8 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
 
     private void OnInteractAction(object sender, EventArgs e)
     {
+        if (!HahaluGameManager.Instance.IsGamePlaying()) return;
+
         if(selectedCounter != null)
         {
             selectedCounter.Interact(this);

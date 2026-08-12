@@ -74,6 +74,11 @@ public class TouristRequestUI : MonoBehaviour
     {
         if (failX != null) failX.SetActive(false);
     }
+
+    public void HideWinIcon()
+    {
+        if (check != null) check.SetActive(false);
+    }
  
     public void SwitchRawImage(string textureName)
     {

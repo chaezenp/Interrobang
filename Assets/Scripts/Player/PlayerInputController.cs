@@ -6,11 +6,13 @@ using UnityEngine.InputSystem.Interactions;
 
 public class PlayerInputController : MonoBehaviour
 {
+    public static PlayerInputController Instance { get; private set;}
     public event EventHandler OnInteractAction;
     public event EventHandler OnTestInteractAction;
     public event EventHandler OnAltButtonAction;
     public event EventHandler OnInteractHoldAction;
     public event EventHandler OnInteractHoldCanceled;
+    public event EventHandler OnPauseAction;
 
 
     public Vector2 MovementInputVector { get; private set; }
@@ -19,6 +21,8 @@ public class PlayerInputController : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+        
         playerInputActions = new InputSystem_Actions();
         playerInputActions.Player.Enable();
 
@@ -26,6 +30,23 @@ public class PlayerInputController : MonoBehaviour
         playerInputActions.Player.Interact.canceled += OnInteractCanceled; 
         playerInputActions.Player.TestInteract.performed += OnTestButtonPressed;
         playerInputActions.Player.AltInteract.performed += OnAltButtonPressed;
+        playerInputActions.Player.PauseGame.performed += OnPauseGamePressed;
+    }
+
+    private void OnDestroy()
+    {
+        playerInputActions.Player.Interact.performed -= OnInteractButtonPressed;
+        playerInputActions.Player.Interact.canceled -= OnInteractCanceled; 
+        playerInputActions.Player.TestInteract.performed -= OnTestButtonPressed;
+        playerInputActions.Player.AltInteract.performed -= OnAltButtonPressed;
+        playerInputActions.Player.PauseGame.performed -= OnPauseGamePressed;
+
+        playerInputActions.Dispose();
+    }
+
+    private void OnPauseGamePressed(InputAction.CallbackContext context)
+    {
+        OnPauseAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnInteractCanceled(InputAction.CallbackContext obj)
