@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class TouristManager : MonoBehaviour
 {
+    public static TouristManager Instance { get; private set;}
+
     private enum SpawnMilestone { Level1, Level2, Level3, Level4, Finished }
     private SpawnMilestone currentMilestone = SpawnMilestone.Level1;
 
     public GameObject TouristPrefab;
     [SerializeField] private GameObject[] TouristsTypes;
     public GameObject Player;
+    public GameObject PlayerModel;
+    public GameObject PlayerHandHoldPoint;
     public GameObject ExplodeDeath;
 
     [SerializeField] private Transform spawnStartPosition;
@@ -21,6 +25,7 @@ public class TouristManager : MonoBehaviour
     private float timerAddPoints = 0;
     public float timeNeedSurvivePoints = 20f;
     [SerializeField] private int survivedPoints = 10;
+
 
     [Header("Leaving")]
     public int minDeliveriesBeforeLeave = 3;
@@ -36,11 +41,18 @@ public class TouristManager : MonoBehaviour
     private bool gameModeIsChase = false;
     private int totalPoints = 0;
     private float spawnCooldownTimer = 0f;
+    private int successfulDeliveriesAmount = 0;
+    private bool playerCaught = false;
 
     private void Start()
     {
         availableSlots.AddRange(seatPositions);
         CheckPointsAndSlots();
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
     private void Update()
@@ -71,8 +83,14 @@ public class TouristManager : MonoBehaviour
         CheckPointsAndSlots();
     }
 
+    public void AddSuccessDeliver(int amount)
+    {
+        successfulDeliveriesAmount += amount;
+    }
+
     private void CheckPointsAndSlots()
     {
+        if (playerCaught) return;
         if (gameModeIsChase) return;
         if (spawnCooldownTimer > 0f) return;
 
@@ -159,6 +177,8 @@ public class TouristManager : MonoBehaviour
         if (touristAngerScript != null)
         {
             touristAngerScript.Player = Player;
+            touristAngerScript.PlayerModel = PlayerModel;
+            touristAngerScript.playerHand = PlayerHandHoldPoint;
             touristAngerScript.seatPos = targetSlot;
             touristAngerScript.LeavePos = leaveEndPosition;
         }
@@ -219,5 +239,15 @@ public class TouristManager : MonoBehaviour
         spawnCooldownTimer = spawnCooldownAfterLeave;
 
         CheckPointsAndSlots();
+    }
+
+    public int GetSuccessfulDeliveriesAmount()
+    {
+        return successfulDeliveriesAmount;
+    }
+    
+    public bool isPlayerCaught()
+    {
+        return playerCaught == true;
     }
 }

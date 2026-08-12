@@ -970,6 +970,7 @@ MonoBehaviour:
   currentItemIndex: 0
   randTimerMin: 30
   randTimerMax: 60
+  wrongItemTimDeduction: 5
   minDeliveriesBeforeLeave: 3
   maxDeliveriesBeforeLeave: 4
 --- !u!195 &9068958788894195405
@@ -1008,15 +1009,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TEMPTouristAnger
   touristObj: {fileID: 3495980549690647871}
   target: {fileID: 0}
-  touristNormalVIS: {fileID: 0}
-  touristChaseVIS: {fileID: 0}
   deliveryCounter: {fileID: 875834589418772226}
   requestUI: {fileID: 4605615876553296370}
   seatPos: {fileID: 0}
   LeavePos: {fileID: 0}
   Player: {fileID: 0}
   PlayerModel: {fileID: 0}
+  playerHand: {fileID: 0}
   playerTransform: {fileID: 0}
+  animBool: {fileID: 0}
   moveSpeed: 10
   rotationSpeed: 5
   interestTimer: 15
@@ -1064,8 +1065,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000002, y: 4.05, z: 3.75}
-  m_Center: {x: 0.2, y: 1, z: -0.7}
+  m_Size: {x: 1.5, y: 4.05, z: 3.75}
+  m_Center: {x: 0, y: 1, z: -0.7}
 --- !u!1 &3961912333570862380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,11 +1771,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4746061937861678057, guid: 84a7aa2318f5d504b85f43eb284ae1ee, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1650565133382449658, guid: 84a7aa2318f5d504b85f43eb284ae1ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6853807820602021352}
   m_SourcePrefab: {fileID: 100100000, guid: 84a7aa2318f5d504b85f43eb284ae1ee, type: 3}
+--- !u!1 &976310926212633275 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1650565133382449658, guid: 84a7aa2318f5d504b85f43eb284ae1ee, type: 3}
+  m_PrefabInstance: {fileID: 1975797807480269633}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6853807820602021352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976310926212633275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5d5188ef2fe0447976312a50064371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCsliderContols
+  targetAnimator: {fileID: 3413633152830839344}
+  progressSlider: {fileID: 5928961080482323291}
+  parameterName: t2
+  parameterBool: isChasing
+--- !u!95 &3413633152830839344 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3761870075764797809, guid: 84a7aa2318f5d504b85f43eb284ae1ee, type: 3}
+  m_PrefabInstance: {fileID: 1975797807480269633}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8643013142414763662 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7825381528806968783, guid: 84a7aa2318f5d504b85f43eb284ae1ee, type: 3}
@@ -1840,14 +1871,48 @@ PrefabInstance:
       propertyPath: progressSlider
       value: 
       objectReference: {fileID: 5928961080482323291}
-    m_RemovedComponents: []
+    - target: {fileID: 4888816890318193260, guid: 67ce6426857a8b949be9ee208653f2ed, type: 3}
+      propertyPath: m_EditorClassIdentifier
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4888816890318193260, guid: 67ce6426857a8b949be9ee208653f2ed, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4583326539106787591, guid: 67ce6426857a8b949be9ee208653f2ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2975046364760881163}
   m_SourcePrefab: {fileID: 100100000, guid: 67ce6426857a8b949be9ee208653f2ed, type: 3}
+--- !u!1 &883226050464104771 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4583326539106787591, guid: 67ce6426857a8b949be9ee208653f2ed, type: 3}
+  m_PrefabInstance: {fileID: 3736552132247838788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2975046364760881163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883226050464104771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5d5188ef2fe0447976312a50064371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCsliderContols
+  targetAnimator: {fileID: 5787900607176062124}
+  progressSlider: {fileID: 5928961080482323291}
+  parameterName: t3
+  parameterBool: isChasing
 --- !u!4 &919089308694950022 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4547409147125256386, guid: 67ce6426857a8b949be9ee208653f2ed, type: 3}
+  m_PrefabInstance: {fileID: 3736552132247838788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5787900607176062124 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7172024953517331688, guid: 67ce6426857a8b949be9ee208653f2ed, type: 3}
   m_PrefabInstance: {fileID: 3736552132247838788}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8754591136286214824
@@ -1899,6 +1964,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2608862813294873857, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}
+      propertyPath: parameterBool
+      value: isChasing
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608862813294873857, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}
       propertyPath: progressSlider
       value: 
       objectReference: {fileID: 5928961080482323291}
@@ -1910,11 +1979,41 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2608862813294873857, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2746868150182928897, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 693338994982394649}
   m_SourcePrefab: {fileID: 100100000, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}
+--- !u!95 &1654126718358946285 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8037286228054969157, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}
+  m_PrefabInstance: {fileID: 8754591136286214824}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6872590090118588585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2746868150182928897, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}
+  m_PrefabInstance: {fileID: 8754591136286214824}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &693338994982394649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6872590090118588585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5d5188ef2fe0447976312a50064371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCsliderContols
+  targetAnimator: {fileID: 1654126718358946285}
+  progressSlider: {fileID: 5928961080482323291}
+  parameterName: t1
+  parameterBool: isChasing
 --- !u!4 &7627844621160239344 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1199367100125076056, guid: 50192d772e86d994dae2f3ed5d4048dd, type: 3}

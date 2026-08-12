@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TouristPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 3495980549690647871, guid: cd3b2b9e79616204fb275d58cb3278ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4762317448672837477, guid: cd3b2b9e79616204fb275d58cb3278ac, type: 3}
       propertyPath: Player
       value: 
@@ -1083,11 +1087,14 @@ MonoBehaviour:
   validItemRequestsSO: {fileID: 11400000, guid: 9a4e30ee65558d04f927f92f49b060fa, type: 2}
   currentItemRequest: {fileID: 0}
   requestUI: {fileID: 0}
+  angerChase: {fileID: 0}
   PC: {fileID: 956013292}
   presentTest: 0
   currentItemIndex: 0
   randTimerMin: 30
   randTimerMax: 60
+  minDeliveriesBeforeLeave: 3
+  maxDeliveriesBeforeLeave: 6
 --- !u!65 &338810060
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1583,8 +1590,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: a8f68b4f5dba35c48bd319e0b71e531c, type: 3}
   - {fileID: 2800000, guid: 7d9990d6a5a9d49478afe05126faed29, type: 3}
   slider: {fileID: 1210281496}
-  requestItemImage: {fileID: 1983007452}
   sliderInstance: {fileID: 1210281494}
+  requestItemImage: {fileID: 1983007452}
   requestImage: {fileID: 1983007449}
   check: {fileID: 859847378}
   failX: {fileID: 377438506}
@@ -2427,6 +2434,107 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731682695}
   m_CullTransparentMesh: 1
+--- !u!1 &737623148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 737623149}
+  - component: {fileID: 737623152}
+  - component: {fileID: 737623151}
+  - component: {fileID: 737623150}
+  m_Layer: 0
+  m_Name: PauseMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &737623149
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737623148}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1696539784}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &737623150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737623148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &737623151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737623148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &737623152
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737623148}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &737982465
 GameObject:
   m_ObjectHideFlags: 0
@@ -4944,11 +5052,14 @@ MonoBehaviour:
   validItemRequestsSO: {fileID: 11400000, guid: 9a4e30ee65558d04f927f92f49b060fa, type: 2}
   currentItemRequest: {fileID: 0}
   requestUI: {fileID: 0}
+  angerChase: {fileID: 0}
   PC: {fileID: 956013292}
   presentTest: 0
   currentItemIndex: 0
   randTimerMin: 30
   randTimerMax: 60
+  minDeliveriesBeforeLeave: 3
+  maxDeliveriesBeforeLeave: 6
 --- !u!136 &1447618394
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5069,8 +5180,10 @@ MonoBehaviour:
   touristChaseVIS: {fileID: 1092193419}
   deliveryCounter: {fileID: 0}
   requestUI: {fileID: 0}
-  originalPos: {fileID: 233550197}
+  seatPos: {fileID: 0}
+  LeavePos: {fileID: 0}
   Player: {fileID: 956013291}
+  PlayerModel: {fileID: 0}
   playerTransform: {fileID: 956013294}
   moveSpeed: 3
   rotationSpeed: 5
@@ -5609,8 +5722,10 @@ MonoBehaviour:
   touristChaseVIS: {fileID: 0}
   deliveryCounter: {fileID: 0}
   requestUI: {fileID: 0}
-  originalPos: {fileID: 0}
+  seatPos: {fileID: 0}
+  LeavePos: {fileID: 0}
   Player: {fileID: 956013296}
+  PlayerModel: {fileID: 0}
   playerTransform: {fileID: 0}
   moveSpeed: 2
   rotationSpeed: 5
@@ -6074,6 +6189,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 46, y: 0, z: 0}
+--- !u!1 &1696539783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1696539784}
+  m_Layer: 0
+  m_Name: UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1696539784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696539783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 958.9646, y: 542.0604, z: 26.2714}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 737623149}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1715954491
 GameObject:
   m_ObjectHideFlags: 0
@@ -6292,10 +6439,16 @@ MonoBehaviour:
   ExplodeDeath: {fileID: 0}
   spawnStartPosition: {fileID: 0}
   seatPositions: []
+  leaveEndPosition: {fileID: 0}
   playerTransform: {fileID: 0}
   failedRequestsCount: 0
   failsUntilChase: 3
-  timerAddPoints: 0
+  timeNeedSurvivePoints: 20
+  survivedPoints: 10
+  minDeliveriesBeforeLeave: 3
+  maxDeliveriesBeforeLeave: 6
+  spawnCooldownAfterLeave: 5
+  targetActiveTourists: 0100000002000000030000000400000005000000
 --- !u!1 &1811371218
 GameObject:
   m_ObjectHideFlags: 0
@@ -8278,3 +8431,4 @@ SceneRoots:
   - {fileID: 956013290}
   - {fileID: 1672826355}
   - {fileID: 62073250}
+  - {fileID: 1696539784}

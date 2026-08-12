@@ -18,6 +18,7 @@ public class DeliveryCounter : BaseCounter
     [Header("Timer")]
     public int randTimerMin = 30;
     public int randTimerMax = 60;
+    public float wrongItemTimDeduction = 5f;
 
     [Header("Leaving")]
     public int minDeliveriesBeforeLeave = 3;
@@ -43,6 +44,7 @@ public class DeliveryCounter : BaseCounter
 
     private float spawnItemTimer;
     private float spawnItemTimerMax = 4f;
+    private float leaveTimerMax = 5f;
 
     private int buttonPressProgress;
     private float holdProgressTimer = 0f;
@@ -81,6 +83,7 @@ public class DeliveryCounter : BaseCounter
 
         ItemSO itemSO = playerController.GetItemObject().GetItemObjectSO();
         Debug.Log(itemSO);
+        wrongItemPenaltyApplied = false;
 
         if (currentItemRequest != null && !currentItemRequest.itemSOList.Contains(itemSO))
         {
@@ -156,6 +159,10 @@ public class DeliveryCounter : BaseCounter
         {
             SetRequestActive(true);
             HandleRequestCountdown();
+        }
+        if (isReadyToLeave)
+        {
+            touristLeave();
         }
     }
 
@@ -297,6 +304,7 @@ public class DeliveryCounter : BaseCounter
         if (manager != null)
         {
             AddPoints();
+            manager.AddSuccessDeliver(1);
         }
 
         timerFinalized = true;
@@ -306,9 +314,8 @@ public class DeliveryCounter : BaseCounter
         successfulDeliveries++;
         if (!isReadyToLeave && successfulDeliveries >= deliveriesUntilLeave)
         {
+            leaveTimerMax = UnityEngine.Random.Range(4, 15);
             isReadyToLeave = true;
-            requestUI.HideAll();
-            OnReadyToLeave?.Invoke();
         }
 
         isPlayerHoldingButtonDown = false;
@@ -318,6 +325,17 @@ public class DeliveryCounter : BaseCounter
         Debug.Log("Item Delivered!");
 
         ResetProgress();
+    }
+
+    private void touristLeave()
+    {
+        leaveTimerMax -= Time.deltaTime;
+        if (leaveTimerMax < 0)
+        {
+            requestUI.HideAll();
+            requestUI.HideWinIcon();
+            OnReadyToLeave?.Invoke();
+        }
     }
 
     private void FailRequest()
@@ -345,6 +363,7 @@ public class DeliveryCounter : BaseCounter
             // Timer penalty
             // Sound triggers
             // Visual red outline on timer & shake?
+            timerValue -= wrongItemTimDeduction;
         }
     }
 

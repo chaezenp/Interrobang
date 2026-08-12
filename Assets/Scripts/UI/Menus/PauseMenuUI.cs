@@ -1,0 +1,103 @@
+using System;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
+
+public class PauseMenuUI : MonoBehaviour
+{
+    [Header("Buttons")]
+    [SerializeField] private FirstSelectedButton firstSelectedButtonPause;
+    [SerializeField] private Button ResumeButton;
+    [SerializeField] private Button OptionsButton;
+    [SerializeField] private Button ControlsButton;
+    [SerializeField] private Button QuitButton;
+
+    [Header("Pause Menu UI Objects")]
+    public GameObject PauseMenu;
+    public CanvasGroup PauseMenuCanvasGroup;
+
+    [Header("Blur Settings")]
+    public Volume blurVolume; 
+    public float fadeSpeed = 4f;
+    
+    private bool isPaused = false;
+    private float targetWeight = 0f;
+    private void Awake()
+    {
+        ResumeButton.onClick.AddListener(() =>
+        {
+            // Click
+            HahaluGameManager.Instance.TogglePauseMenu();
+        });
+        QuitButton.onClick.AddListener(() =>
+        {
+            // Click
+            Loader.Load(Loader.Scene.MainMenuScene);
+        });
+    }
+
+    private void Start()
+    {
+        HahaluGameManager.Instance.OnGamePaused += HahaluGameManager_OnGamePaused;
+        HahaluGameManager.Instance.OnGameUnPaused += HahaluGameManager_OnGameUnPaused;
+
+        if (blurVolume != null) blurVolume.weight = 0f;
+        if (PauseMenuCanvasGroup != null) PauseMenuCanvasGroup.alpha = 0f;
+        Hide();
+    }
+    private void Update()
+    {
+        if (blurVolume != null && blurVolume.weight != targetWeight)
+        {
+            float currentWeight = Mathf.MoveTowards(blurVolume.weight, targetWeight, fadeSpeed * Time.unscaledDeltaTime);
+            
+            blurVolume.weight = currentWeight;
+            
+            if (PauseMenuCanvasGroup != null)
+            {
+                PauseMenuCanvasGroup.alpha = currentWeight;
+            }
+
+            if (blurVolume.weight == 0f && !isPaused)
+            {
+                Hide();
+            }
+        }
+    }
+
+    private void HahaluGameManager_OnGameUnPaused(object sender, EventArgs e)
+    {
+        isPaused = false;
+        targetWeight = 0f;
+    }
+
+    private void HahaluGameManager_OnGamePaused(object sender, EventArgs e)
+    {
+        isPaused = true;
+        targetWeight = 1f;
+        Show();
+    }
+
+    private void Show()
+    {
+        PauseMenu.SetActive(true);
+        firstSelectedButtonPause.FocusMenu();
+    }
+
+    private void Hide()
+    {
+        PauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+
+    }
+
+    private void OnDestroy()
+    {
+        if (HahaluGameManager.Instance != null)
+        {
+        HahaluGameManager.Instance.OnGamePaused -= HahaluGameManager_OnGamePaused;
+        HahaluGameManager.Instance.OnGameUnPaused -= HahaluGameManager_OnGameUnPaused;
+
+        }
+    }
+}
