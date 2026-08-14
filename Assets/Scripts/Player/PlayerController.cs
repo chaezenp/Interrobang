@@ -140,11 +140,20 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
             }
             float interactDistance = 1f;
             //Make the raycast hit higher because if left on default it would not hit counter
-            Vector3 rayOrigin = transform.position + new Vector3(0f, .5f, 0f); 
-            //Debug.DrawRay(rayOrigin, lastInteractDir * interactDistance, Color.red);
+            Vector3 rayOrigin = transform.position + new Vector3(0f, 1f, 0f); 
+            Debug.DrawRay(rayOrigin, lastInteractDir * interactDistance, Color.red);
             //Raycast to hit counter/Interactables
-            if (Physics.Raycast(rayOrigin, lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask, QueryTriggerInteraction.Collide))
+
+            Vector3 boxHalfExtents = new Vector3(0.1f, 5f, 0.1f);
+            // idk box cast test :P
+
+
+            //old ray cast //if (Physics.Raycast(rayOrigin, lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask, QueryTriggerInteraction.Collide))
+
+            if (Physics.BoxCast(rayOrigin, boxHalfExtents, lastInteractDir, out RaycastHit raycastHit, Quaternion.identity, interactDistance, counterLayerMask, QueryTriggerInteraction.Collide))
+            
             {
+              
                 if(raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
                 {
                 if (baseCounter != selectedCounter)
