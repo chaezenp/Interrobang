@@ -12,7 +12,9 @@ public class DeliveryCounter : BaseCounter
     public PlayerController PC;
 
     // For presentations: cycle through the request list in order instead of randomly
+    [Header("Present test bools")]
     public bool presentTest;
+    public bool TouristLeaveTEST;
     public int currentItemIndex = 0;
 
     [Header("Timer")]
@@ -50,6 +52,13 @@ public class DeliveryCounter : BaseCounter
     private float holdProgressTimer = 0f;
     private bool isPlayerHoldingButtonDown = false;
     private bool wrongItemPenaltyApplied = false;
+
+    //Points
+    [Header("Points for items; ONLY EDIT IN TOURIST MANAGER")]
+    public int SunscreenPoints;
+    public int CoconutPoints;
+    public int TowelPoints;
+    public int PokePoints;
 
     private void OnEnable()
     {
@@ -160,7 +169,7 @@ public class DeliveryCounter : BaseCounter
             SetRequestActive(true);
             HandleRequestCountdown();
         }
-        if (isReadyToLeave)
+        if (isReadyToLeave || TouristLeaveTEST)
         {
             touristLeave();
         }
@@ -285,16 +294,16 @@ public class DeliveryCounter : BaseCounter
         switch (itemName)
         {
             case "Sunscreen":
-                manager.AddScore(5);
+                manager.AddScore(SunscreenPoints);
                 break;
             case "CoconutDrinkFilled":
-                manager.AddScore(10);
+                manager.AddScore(CoconutPoints);
                 break;
             case "Towel":
-                manager.AddScore(10);
+                manager.AddScore(TowelPoints);
                 break;
             case "FullPokeBowl":
-                manager.AddScore(20);
+                manager.AddScore(PokePoints);
                 break;
         }
     }
