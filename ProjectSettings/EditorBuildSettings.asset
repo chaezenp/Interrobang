@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/LoadingScene.unity
     guid: e941ef0a359521b4c96a3da6b9b453f9
   - enabled: 1
+    path: Assets/Scenes/CreditsScene.unity
+    guid: 39e751c82edb62a4f837fafccd1bf921
+  - enabled: 1
     path: Assets/Scenes/TestLevelWithART.unity
     guid: 7b0952863d2b70f40b884d46cf42b3b0
   m_configObjects:

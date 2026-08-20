@@ -5,7 +5,7 @@ public class TouristManager : MonoBehaviour
 {
     public static TouristManager Instance { get; private set;}
 
-    private enum SpawnMilestone { Level1, Level2, Level3, Level4, Level5, Level6, Level7, Level8}
+    private enum SpawnMilestone { Level1, Level2, Level3, Level4, Finished }
     private SpawnMilestone currentMilestone = SpawnMilestone.Level1;
 
     public GameObject TouristPrefab;
@@ -22,42 +22,19 @@ public class TouristManager : MonoBehaviour
 
     public int failedRequestsCount = 0;
     public int failsUntilChase = 3;
-
     private float timerAddPoints = 0;
-    [Header("Points System")]
-
-    [Tooltip("Time in seconds until points are added")]
     public float timeNeedSurvivePoints = 20f;
-    [Tooltip("Points added based off survived Time")]
     [SerializeField] private int survivedPoints = 10;
-
-    [Header("Item Point Values")]
-
-    [SerializeField] private int SunscreenPoints = 5;
-    [SerializeField] private int TowelPoints = 10;
-    [SerializeField] private int CoconutPoints = 15;
-    [SerializeField] private int PokePoints = 25;
-
-    [Header("Milestone Point Values")]
-    [SerializeField] private int PointMilestoneLevel1 = 50;
-    [SerializeField] private int PointMilestoneLevel2 = 100;
-    [SerializeField] private int PointMilestoneLevel3 = 250;
-    [SerializeField] private int PointMilestoneLevel4 = 500;
-    [SerializeField] private int PointMilestoneLevel5 = 1000;
-    [SerializeField] private int PointMilestoneLevel6 = 1500;
-    [SerializeField] private int PointMilestoneLevel7 = 2000;
-
 
 
     [Header("Leaving")]
     public int minDeliveriesBeforeLeave = 3;
     public int maxDeliveriesBeforeLeave = 6;
-    [Tooltip("Dont go lower than 15")]
-    public float spawnCooldownAfterLeave = 15f;
+    public float spawnCooldownAfterLeave = 5f;
 
     [Header("Active Tourist Target")]
     // How many tourists should be active at once at each milestone.
-    public int[] targetActiveTourists = new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+    public int[] targetActiveTourists = new int[] { 1, 2, 3, 4, 5 };
 
     private List<Transform> availableSlots = new List<Transform>();
     private List<DeliveryCounter> ActiveTourists = new List<DeliveryCounter>();
@@ -69,10 +46,6 @@ public class TouristManager : MonoBehaviour
 
     private void Start()
     {
-        if (spawnCooldownAfterLeave < 15)
-        {
-            spawnCooldownTimer = 15f;
-        }
         availableSlots.AddRange(seatPositions);
         CheckPointsAndSlots();
     }
@@ -90,7 +63,7 @@ public class TouristManager : MonoBehaviour
             AddScore(survivedPoints);
         }
 
-        if (spawnCooldownTimer > 0f && (ActiveTourists.Count < GetTargetActiveTourists()))
+        if (spawnCooldownTimer > 0f)
         {
             spawnCooldownTimer -= Time.deltaTime;
             if (spawnCooldownTimer <= 0f)
@@ -119,8 +92,9 @@ public class TouristManager : MonoBehaviour
     {
         if (playerCaught) return;
         if (gameModeIsChase) return;
-        UpdateMilestone();
         if (spawnCooldownTimer > 0f) return;
+
+        UpdateMilestone();
 
         if (availableSlots.Count == 0)
         {
@@ -129,8 +103,6 @@ public class TouristManager : MonoBehaviour
         }
 
         int target = GetTargetActiveTourists();
-        Debug.Log("active target: " + target);
-
         if (ActiveTourists.Count < target)
         {
             SpawnTourist();
@@ -145,44 +117,30 @@ public class TouristManager : MonoBehaviour
         {
             switch (currentMilestone)
             {
-                case SpawnMilestone.Level1 when totalPoints >= PointMilestoneLevel1:
-                    spawnCooldownAfterLeave = 15f;
+                case SpawnMilestone.Level1 when totalPoints >= 49:
                     currentMilestone = SpawnMilestone.Level2;
                     continue;
 
-                case SpawnMilestone.Level2 when totalPoints >= PointMilestoneLevel2:
+                case SpawnMilestone.Level2 when totalPoints >= 99:
                     currentMilestone = SpawnMilestone.Level3;
                     continue;
 
-                case SpawnMilestone.Level3 when totalPoints >= PointMilestoneLevel3:
-                    spawnCooldownAfterLeave = 10f;
+                case SpawnMilestone.Level3 when totalPoints >= 149:
                     currentMilestone = SpawnMilestone.Level4;
                     continue;
 
-                case SpawnMilestone.Level4 when totalPoints >= PointMilestoneLevel4:
-                    currentMilestone = SpawnMilestone.Level5;
+                case SpawnMilestone.Level4 when totalPoints >= 199:
+                    currentMilestone = SpawnMilestone.Finished;
                     continue;
-                case SpawnMilestone.Level5 when totalPoints >= PointMilestoneLevel5:
-                    currentMilestone = SpawnMilestone.Level6;
-                    continue;            
-                case SpawnMilestone.Level6 when totalPoints >= PointMilestoneLevel6:
-                    spawnCooldownAfterLeave = 5f;
-                    currentMilestone = SpawnMilestone.Level7;
-                    continue;
-                case SpawnMilestone.Level7 when totalPoints >= PointMilestoneLevel7:
-                    currentMilestone = SpawnMilestone.Level8;
-                    continue;
-                    }
+            }
             break;
         }
-
     }
 
     private int GetTargetActiveTourists()
     {
         if (targetActiveTourists == null || targetActiveTourists.Length == 0) return 1;
         int index = Mathf.Clamp((int)currentMilestone, 0, targetActiveTourists.Length - 1);
-        Debug.Log("active index: " + index);
         return targetActiveTourists[index];
     }
 
@@ -212,11 +170,6 @@ public class TouristManager : MonoBehaviour
         touristScript.Initialize(this);
         touristScript.minDeliveriesBeforeLeave = minDeliveriesBeforeLeave;
         touristScript.maxDeliveriesBeforeLeave = maxDeliveriesBeforeLeave;
-        touristScript.SunscreenPoints = SunscreenPoints;
-        touristScript.TowelPoints = TowelPoints;
-        touristScript.CoconutPoints = CoconutPoints;
-        touristScript.PokePoints = PokePoints;
-
         touristScript.OnReadyToLeave += () => OnNPCLeft(newNPC);
         ActiveTourists.Add(touristScript);
 
