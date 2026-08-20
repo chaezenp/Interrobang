@@ -16,6 +16,9 @@ public class PauseMenuUI : MonoBehaviour
     public GameObject PauseMenu;
     public CanvasGroup PauseMenuCanvasGroup;
 
+    [Header("Touch Controls UI")]
+    public GameObject TouchControls;
+
     [Header("Blur Settings")]
     public Volume blurVolume; 
     public float fadeSpeed = 4f;
@@ -80,6 +83,7 @@ public class PauseMenuUI : MonoBehaviour
 
     private void Show()
     {
+        TouchControls.SetActive(false);
         PauseMenu.SetActive(true);
         firstSelectedButtonPause.FocusMenu();
     }
@@ -88,7 +92,7 @@ public class PauseMenuUI : MonoBehaviour
     {
         PauseMenu.SetActive(false);
         Time.timeScale = 1f;
-
+        TouchControls.SetActive(true);
     }
 
     private void OnDestroy()

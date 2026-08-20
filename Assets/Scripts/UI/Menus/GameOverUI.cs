@@ -15,6 +15,9 @@ public class GameOverUI : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI recipiesDeliveredNumberText;
 
+    [Header("Touch Controls UI")]
+    public GameObject TouchControlsUI;
+
     [Header("Blur Settings")]
     public Volume blurVolume; 
     public float fadeSpeed = 4f;
@@ -81,6 +84,7 @@ public class GameOverUI : MonoBehaviour
     }
     private void Show()
     {
+        TouchControlsUI.SetActive(false);
         GameOverMenu.SetActive(true);
         firstSelectedButtonGameOver.FocusMenu();
     }
@@ -88,6 +92,7 @@ public class GameOverUI : MonoBehaviour
     private void Hide()
     {
         GameOverMenu.SetActive(false);
+        TouchControlsUI.SetActive(true);
     }
 
 }
