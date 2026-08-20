@@ -26,7 +26,7 @@ public class ToggleMobileUI : MonoBehaviour
         }
         #endif
 
-        if (Touchscreen.current != null)
+        if (Application.isMobilePlatform)
         {
             // Device has a touch screen
             mobileUiPanel.SetActive(true);
