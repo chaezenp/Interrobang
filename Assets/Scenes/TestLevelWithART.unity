@@ -3728,6 +3728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d380e76e2f3bfa340b41751c523fdd9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleMobileUI
+  pauseMenuUI: {fileID: 739589960}
   mobileUiPanel: {fileID: 1748425010}
   forceShowInEditor: 0
 --- !u!1 &204991780
@@ -18585,7 +18586,7 @@ MonoBehaviour:
   QuitButton: {fileID: 1380775916}
   PauseMenu: {fileID: 1373047500}
   PauseMenuCanvasGroup: {fileID: 1373047502}
-  TouchControls: {fileID: 1748425010}
+  TouchControls: {fileID: 0}
   blurVolume: {fileID: 1572014211}
   fadeSpeed: 1
 --- !u!1 &742146560

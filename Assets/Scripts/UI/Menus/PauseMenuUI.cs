@@ -83,7 +83,10 @@ public class PauseMenuUI : MonoBehaviour
 
     private void Show()
     {
-        TouchControls.SetActive(false);
+        if (TouchControls != null)
+        {
+            TouchControls.SetActive(false);
+        }
         PauseMenu.SetActive(true);
         firstSelectedButtonPause.FocusMenu();
     }
@@ -92,7 +95,10 @@ public class PauseMenuUI : MonoBehaviour
     {
         PauseMenu.SetActive(false);
         Time.timeScale = 1f;
-        TouchControls.SetActive(true);
+        if (TouchControls != null)
+        {
+            TouchControls.SetActive(true);
+        }
     }
 
     private void OnDestroy()

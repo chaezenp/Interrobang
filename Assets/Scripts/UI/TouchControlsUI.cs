@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class ToggleMobileUI : MonoBehaviour
 {
+    [Header("Pause Menu Ref")]
+    public PauseMenuUI pauseMenuUI;
     [Header("Mobile UI Configuration")]
     [SerializeField] private GameObject mobileUiPanel;
     
@@ -28,6 +30,7 @@ public class ToggleMobileUI : MonoBehaviour
         {
             // Device has a touch screen
             mobileUiPanel.SetActive(true);
+            pauseMenuUI.TouchControls = mobileUiPanel;
         }
         else
         {

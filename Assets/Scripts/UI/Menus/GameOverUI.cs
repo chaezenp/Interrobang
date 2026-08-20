@@ -92,7 +92,6 @@ public class GameOverUI : MonoBehaviour
     private void Hide()
     {
         GameOverMenu.SetActive(false);
-        TouchControlsUI.SetActive(true);
     }
 
 }
