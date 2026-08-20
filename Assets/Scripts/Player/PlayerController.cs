@@ -174,6 +174,11 @@ public class PlayerController : MonoBehaviour, IItemObjectParent
 
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {
+        if (this.selectedCounter != null && this.selectedCounter != selectedCounter)
+        {
+            this.selectedCounter.InteractHoldRelease(this);
+        }
+        
         this.selectedCounter = selectedCounter;
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {

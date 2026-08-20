@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu()]
+[CreateAssetMenu()]
 //RecipeListSO
 public class ValidItemRequestsSO : ScriptableObject
 {

@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
 
-public class DeliveryCounter : BaseCounter
+public class DeliveryCounter : BaseCounter, IHasProgress
 {
+    public event EventHandler <IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+
+
     [Header("Requests")]
     [SerializeField] private ValidItemRequestsSO validItemRequestsSO;
     [SerializeField] private ItemRequestSO currentItemRequest;
@@ -102,7 +105,7 @@ public class DeliveryCounter : BaseCounter
 
         if (itemSO.isHoldItem)
         {
-            isPlayerHoldingButtonDown = true;
+           //isPlayerHoldingButtonDown = true;
         }
         else
         {
@@ -192,7 +195,7 @@ public class DeliveryCounter : BaseCounter
         else
         {
             currentItemRequest = validItemRequestsSO.itemRequestSOList[
-                UnityEngine.Random.Range(0, validItemRequestsSO.itemRequestSOList.Count)];
+            UnityEngine.Random.Range(0, validItemRequestsSO.itemRequestSOList.Count)];
         }
 
         BeginRequest();
@@ -262,13 +265,17 @@ public class DeliveryCounter : BaseCounter
     {
         buttonPressProgress++;
 
+        // For progress bar — look at fill station
+        float inputProgress = (float)buttonPressProgress / itemSO.targetGoal;
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = inputProgress
+        });
+
         if (buttonPressProgress >= itemSO.targetGoal)
         {
             CompleteDelivery();
         }
-
-        // For progress bar — look at fill station
-        float inputProgress = (float)buttonPressProgress / itemSO.targetGoal;
     }
 
     private void HandleHoldLogic()
@@ -282,8 +289,16 @@ public class DeliveryCounter : BaseCounter
         ItemSO itemSO = PC.GetItemObject().GetItemObjectSO();
 
         holdProgressTimer += Time.deltaTime;
-        if (holdProgressTimer >= itemSO.targetGoal)
+        float testforHold = holdProgressTimer/itemSO.targetGoal;
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
         {
+            progressNormalized = holdProgressTimer / itemSO.targetGoal
+        });
+            Debug.Log("Pro: " + testforHold);
+
+
+        if (holdProgressTimer >= itemSO.targetGoal)
+        {//copy and paste onprogressChanged to equal to 1 so it disappears when complete delivery
             CompleteDelivery();
         }
     }
@@ -382,5 +397,9 @@ public class DeliveryCounter : BaseCounter
         buttonPressProgress = 0;
         spawnItemTimer = spawnItemTimerMax;
         holdProgressTimer = 0f;
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = 0f
+        });
     }
 }
