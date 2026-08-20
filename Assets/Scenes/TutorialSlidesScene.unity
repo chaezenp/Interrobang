@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &108832426
 RectTransform:
   m_ObjectHideFlags: 0
@@ -424,7 +424,7 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 1
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 0.5
   m_AudioOutputMode: 2
@@ -1035,12 +1035,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSlidesClick
   playerA: {fileID: 1693751319}
   playerB: {fileID: 267105273}
-  playlist:
-  - {fileID: 32900000, guid: 435ddba1937636b488146293ddae48ed, type: 3}
-  - {fileID: 32900000, guid: 63b9615082daa4b4f966ba65cee518fc, type: 3}
-  - {fileID: 32900000, guid: 638538728e541ee4ea418fd6b2cdd741, type: 3}
-  - {fileID: 32900000, guid: ce30500313fc4ed4aaed089be7890a61, type: 3}
-  - {fileID: 32900000, guid: 03d8efa1d20e2fc4a998222f91de75ec, type: 3}
+  playlistFileNames:
+  - tutorial1final.mp4
+  - tutorial2final.mp4
+  - tutorial3final.mp4
+  - tutorial4final.mp4
+  - tutorial5final.mp4
+  navigateActionReference: {fileID: -4755098099470663478, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &1693751318
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,7 +1077,7 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 1
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 0.5
   m_AudioOutputMode: 2
