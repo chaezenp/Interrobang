@@ -16,6 +16,8 @@ public class TutorialSlidesClick : MonoBehaviour
     [Header("Existing Input Map Configuration")]
     [SerializeField] private InputActionReference navigateActionReference;
 
+    public FirstSelectedButton firstSelectedButton;
+
     private VideoPlayer activePlayer;
     private VideoPlayer backgroundPlayer;
     private int currentVideoIndex = 0;
@@ -48,6 +50,8 @@ public class TutorialSlidesClick : MonoBehaviour
             LoadNextScene();
             return;
         }
+
+        firstSelectedButton.FocusMenu();
 
         activePlayer = playerA;
         backgroundPlayer = playerB;
