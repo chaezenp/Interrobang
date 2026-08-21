@@ -8,6 +8,7 @@ public class TouristManager : MonoBehaviour
     private enum SpawnMilestone { Level1, Level2, Level3, Level4, Level5, Level6, Level7, Level8}
     private SpawnMilestone currentMilestone = SpawnMilestone.Level1;
 
+    public DifficultyManager difficultyManager;
     public GameObject TouristPrefab;
     [SerializeField] private GameObject[] TouristsTypes;
     public GameObject Player;
@@ -24,6 +25,7 @@ public class TouristManager : MonoBehaviour
     public int failsUntilChase = 3;
 
     private float timerAddPoints = 0;
+
     [Header("Points System")]
 
     [Tooltip("Time in seconds until points are added")]
@@ -210,6 +212,7 @@ public class TouristManager : MonoBehaviour
         PlayerController PC = Player.GetComponent<PlayerController>();
         touristScript.PC = PC;
         touristScript.Initialize(this);
+        touristScript.InitializeDiffManager(difficultyManager);
         touristScript.minDeliveriesBeforeLeave = minDeliveriesBeforeLeave;
         touristScript.maxDeliveriesBeforeLeave = maxDeliveriesBeforeLeave;
         touristScript.SunscreenPoints = SunscreenPoints;

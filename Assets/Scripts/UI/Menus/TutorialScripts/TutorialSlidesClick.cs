@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Video;
-using UnityEngine.InputSystem; // Required for Input Actions in Unity 6
+using UnityEngine.InputSystem;
 using System.IO;
 
 public class TutorialSlidesClick : MonoBehaviour

@@ -7,6 +7,8 @@ public class PauseMenuUI : MonoBehaviour
 {
     [Header("Buttons")]
     [SerializeField] private FirstSelectedButton firstSelectedButtonPause;
+    [SerializeField] private FirstSelectedButton OptionsFirstSelectedButton;
+    [SerializeField] private FirstSelectedButton ControlsFirstSelectedButton;
     [SerializeField] private Button ResumeButton;
     [SerializeField] private Button OptionsButton;
     [SerializeField] private Button ControlsButton;
@@ -15,6 +17,14 @@ public class PauseMenuUI : MonoBehaviour
     [Header("Pause Menu UI Objects")]
     public GameObject PauseMenu;
     public CanvasGroup PauseMenuCanvasGroup;
+
+    [Header("Options Menu UI Objects")]
+
+    public GameObject OptionsMenu;
+
+    [Header("Controls Menu UI Objects")]
+
+    public GameObject ControlsMenu;
 
     [Header("Touch Controls UI")]
     public GameObject TouchControls;
@@ -47,6 +57,7 @@ public class PauseMenuUI : MonoBehaviour
         if (blurVolume != null) blurVolume.weight = 0f;
         if (PauseMenuCanvasGroup != null) PauseMenuCanvasGroup.alpha = 0f;
         Hide();
+        HideAll();
     }
     private void Update()
     {
@@ -72,6 +83,7 @@ public class PauseMenuUI : MonoBehaviour
     {
         isPaused = false;
         targetWeight = 0f;
+        HideAll();
     }
 
     private void HahaluGameManager_OnGamePaused(object sender, EventArgs e)
@@ -99,6 +111,26 @@ public class PauseMenuUI : MonoBehaviour
         {
             TouchControls.SetActive(true);
         }
+    }
+
+    private void HideAll()
+    {
+        OptionsMenu.SetActive(false);
+        ControlsMenu.SetActive(false);
+
+    }
+
+    public void OnControlsButtonPressed()
+    {
+        PauseMenu.SetActive(false);
+        ControlsMenu.SetActive(true);
+        ControlsFirstSelectedButton.FocusMenu();
+    }
+    public void OnControlsBackButtonPressed()
+    {
+        ControlsMenu.SetActive(false);
+        PauseMenu.SetActive(true);
+        firstSelectedButtonPause.FocusMenu();
     }
 
     private void OnDestroy()

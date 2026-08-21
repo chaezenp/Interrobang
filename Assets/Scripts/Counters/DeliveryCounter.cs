@@ -10,6 +10,7 @@ public class DeliveryCounter : BaseCounter, IHasProgress
     [SerializeField] private ValidItemRequestsSO validItemRequestsSO;
     [SerializeField] private ItemRequestSO currentItemRequest;
     [SerializeField] private TouristRequestUI requestUI;
+    [SerializeField] private RequestInputControlsUI requestInputUI;
     [SerializeField] private TouristAngerChase angerChase;
     [SerializeField] private WrongPenaltyUI wrongPenaltyUI;
 
@@ -38,6 +39,7 @@ public class DeliveryCounter : BaseCounter, IHasProgress
     public event Action OnReadyToLeave;
 
     private TouristManager manager;
+    private DifficultyManager difficultyManager;
 
     private bool canRequest = false;
     private bool requestActive = false;
@@ -118,6 +120,10 @@ public class DeliveryCounter : BaseCounter, IHasProgress
     public void Initialize(TouristManager managerReference)
     {
         manager = managerReference;
+    }
+    public void InitializeDiffManager(DifficultyManager managerReference)
+    {
+        difficultyManager = managerReference;
     }
 
     public override void InteractHold(PlayerController playerController)
@@ -212,10 +218,15 @@ public class DeliveryCounter : BaseCounter, IHasProgress
         timerValue = maxTime;
 
         Debug.Log(currentItemRequest.requestName);
+        TellManagerWhatItem();
 
         if (requestUI != null)
         {
             requestUI.ShowRequest(currentItemRequest.requestName, maxTime);
+        }
+        if (requestInputUI != null)
+        {
+            requestInputUI.TellUIWhatItem(currentItemRequest.requestName);
         }
     }
 
@@ -274,6 +285,11 @@ public class DeliveryCounter : BaseCounter, IHasProgress
             progressNormalized = inputProgress
         });
 
+        if (requestInputUI != null)
+        {
+            requestInputUI.ChangeTapNumber(buttonPressProgress);
+        }
+
         if (buttonPressProgress >= itemSO.targetGoal)
         {
             CompleteDelivery();
@@ -300,7 +316,7 @@ public class DeliveryCounter : BaseCounter, IHasProgress
 
 
         if (holdProgressTimer >= itemSO.targetGoal)
-        {//copy and paste onprogressChanged to equal to 1 so it disappears when complete delivery
+        {
             CompleteDelivery();
         }
     }
@@ -321,6 +337,26 @@ public class DeliveryCounter : BaseCounter, IHasProgress
                 break;
             case "FullPokeBowl":
                 manager.AddScore(PokePoints);
+                break;
+        }
+    }
+
+    private void TellManagerWhatItem()
+    {
+        string itemName = currentItemRequest.requestName;
+        switch (itemName)
+        {
+            case "Sunscreen":
+                difficultyManager.testFunc();
+                break;
+            case "CoconutDrinkFilled":
+                //difficultyManager.
+                break;
+            case "Towel":
+                //difficultyManager.
+                break;
+            case "FullPokeBowl":
+                //difficultyManager.
                 break;
         }
     }
@@ -349,7 +385,6 @@ public class DeliveryCounter : BaseCounter, IHasProgress
 
         PC.GetItemObject().DestroySelf();
         Debug.Log("Item Delivered!");
-
         ResetProgress();
     }
 
@@ -404,5 +439,10 @@ public class DeliveryCounter : BaseCounter, IHasProgress
         {
             progressNormalized = 0f
         });
+        if (requestInputUI != null)
+        {
+            requestInputUI.ResetBools();
+            requestInputUI.Hide();
+        }
     }
 }
