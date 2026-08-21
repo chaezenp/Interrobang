@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2bd88455d5af754ba0a4ad495b9a8fe, type: 3}
   m_Name: ValidRequest(NoCocoANDPoke)
   m_EditorClassIdentifier: Assembly-CSharp::ValidItemRequestsSO
-  itemRequestSOList: []
+  itemRequestSOList:
+  - {fileID: 11400000, guid: 78bfa7166ff6b8e4f846363fd2e3c819, type: 2}
+  - {fileID: 11400000, guid: a51d8e6074942354da14a0950b2ba278, type: 2}

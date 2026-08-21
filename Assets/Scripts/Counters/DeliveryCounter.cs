@@ -11,6 +11,8 @@ public class DeliveryCounter : BaseCounter, IHasProgress
     [SerializeField] private ItemRequestSO currentItemRequest;
     [SerializeField] private TouristRequestUI requestUI;
     [SerializeField] private TouristAngerChase angerChase;
+    [SerializeField] private WrongPenaltyUI wrongPenaltyUI;
+
 
     public PlayerController PC;
 
@@ -387,7 +389,8 @@ public class DeliveryCounter : BaseCounter, IHasProgress
             // Timer penalty
             // Sound triggers
             // Visual red outline on timer & shake?
-            timerValue -= wrongItemTimDeduction;
+            //timerValue -= wrongItemTimDeduction;
+            wrongPenaltyUI.IncorrectItem();
         }
     }
 

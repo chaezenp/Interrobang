@@ -10,6 +10,8 @@ public class SelectedCounterVisual : MonoBehaviour
 
     [SerializeField] private string animationBoolName = "Parameter";
 
+    public GameObject selectedSpinner;
+
     private void Start()
     {
         PlayerController.Instance.OnSelectedCounterChanged += OnSelectedCounterChanged;
@@ -33,6 +35,12 @@ public class SelectedCounterVisual : MonoBehaviour
         // {
         //     visualGameObject.SetActive(true);
         // }
+
+        if (selectedSpinner != null)
+        {
+        selectedSpinner.SetActive(true);
+        }
+
         SetAnimationState(true);
 
     }
@@ -43,6 +51,10 @@ public class SelectedCounterVisual : MonoBehaviour
         // {
         //     visualGameObject.SetActive(false);
         // }
+        if (selectedSpinner != null)
+        {
+        selectedSpinner.SetActive(false);
+        }
         SetAnimationState(false);
 
     }
