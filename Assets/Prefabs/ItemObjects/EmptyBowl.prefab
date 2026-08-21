@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BowlItemObject
   itemSO: {fileID: 11400000, guid: 85d5ce538737b9d41ad0c3de7b8dad8a, type: 2}
-  validItemObjectSOList:
+  recipeOrderSOList:
   - {fileID: 11400000, guid: 8de40e085db74c844b3fbbf295c37783, type: 2}
   - {fileID: 11400000, guid: 64fb98139329ac647b82e2ecf7ba3e73, type: 2}
   bowlProgressionSOList:

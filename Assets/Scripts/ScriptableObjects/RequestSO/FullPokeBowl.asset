@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FullPokeBowl
   m_EditorClassIdentifier: Assembly-CSharp::ItemRequestSO
   itemSOList:
-  - {fileID: 11400000, guid: 85d5ce538737b9d41ad0c3de7b8dad8a, type: 2}
+  - {fileID: 11400000, guid: dc929ce56bc2b8540b616bb8bf4c55c4, type: 2}
   requestName: FullPokeBowl

@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class BowlItemObject : ItemObject 
 {
-    [SerializeField] private List<ItemSO> validItemObjectSOList;
+    // Define the exact required order here (e.g., Index 0 = Rice SO, Index 1 = Fish SO)
+    [SerializeField] private List<ItemSO> recipeOrderSOList; 
     [SerializeField] private List<ItemSO> bowlProgressionSOList; 
 
     private List<ItemSO> itemObjectSOList;
 
     private void Awake() 
     {
-        // Only initialize a new list if one wasn't passed down from a previous state
         if (itemObjectSOList == null)
         {
             itemObjectSOList = new List<ItemSO>();
@@ -19,32 +19,35 @@ public class BowlItemObject : ItemObject
 
     public bool TryAddIngredient(ItemSO itemSO) 
     {
-        // 1. Verify this specific ingredient is allowed in the final recipe
-        if (!validItemObjectSOList.Contains(itemSO)) return false;
+        // Check if the recipe is already full
+        int currentCount = itemObjectSOList.Count;
+        if (currentCount >= recipeOrderSOList.Count) return false;
+
+        // The incoming item must match the exact index position expected next
+        if (recipeOrderSOList[currentCount] != itemSO) 
+        {
+            Debug.LogWarning($"Wrong ingredient order! Expected: {recipeOrderSOList[currentCount].name}, Got: {itemSO.name}");
+            return false;
+        }
         
-        // 2. Prevent adding duplicate ingredients (e.g., adding Rice twice)
+        // Prevent adding duplicate ingredients
         if (itemObjectSOList.Contains(itemSO)) return false;
 
-        // 3. Log the new ingredient into our active array
+        // Log the new ingredient into our active array
         itemObjectSOList.Add(itemSO);
 
-        // 4. Calculate which stage prefab we need to spawn next
-        // 1st ingredient added = index 0 (RiceBowl), 2nd added = index 1 (FullPokeBowl)
+        // Calculate which stage prefab we need to spawn next
         int currentStageIndex = itemObjectSOList.Count - 1;
 
         if (currentStageIndex < bowlProgressionSOList.Count)
         {
-            // Keep a record of the parent attachment and the ingredients array
             IItemObjectParent currentParent = GetItemObjectParent();
             List<ItemSO> ingredientsToTransfer = new List<ItemSO>(itemObjectSOList);
 
-            // Clear the old version from the player's hands or counter top
             DestroySelf();
 
-            // Bring the upgraded visual prefab version into the game world
             ItemObject newBowlInstance = ItemObject.SpawnItemObject(bowlProgressionSOList[currentStageIndex], currentParent);
 
-            // Pass the ingredients list forward so the new prefab knows its history
             if (newBowlInstance.TryGetComponent<BowlItemObject>(out BowlItemObject newBowlItemObject))
             {
                 newBowlItemObject.SetIngredientList(ingredientsToTransfer);
@@ -56,7 +59,6 @@ public class BowlItemObject : ItemObject
         return false;
     }
 
-    // Helper function to inject data from the destroyed bowl version
     public void SetIngredientList(List<ItemSO> savedList)
     {
         this.itemObjectSOList = savedList;
