@@ -6,7 +6,9 @@ using UnityEngine;
 public class CuttingCounter : BaseCounter, IHasProgress
 {
     public event EventHandler <IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+    public event EventHandler OnItemPlaced;
     [SerializeField] private CuttingItemSO[] cutItemSOArray;
+    [SerializeField] private ChopInputUI inputUI;
 
 
     private int cuttingProgress; 
@@ -24,7 +26,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                     // Player holding item that can be filled
                     playerController.GetItemObject().SetItemObjectParent(this);
                     cuttingProgress = 0;
-
+                    
                     CuttingItemSO cuttingItemSO = GetCutItemWithInput(GetItemObject().GetItemObjectSO());
 
                     
@@ -32,6 +34,8 @@ public class CuttingCounter : BaseCounter, IHasProgress
                     {
                         progressNormalized = (float)cuttingProgress/ cuttingItemSO.fillProgressMax
                     });
+                    OnItemPlaced?.Invoke(this, EventArgs.Empty);
+
                 }
             }
             else
@@ -58,6 +62,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
                     {
                         progressNormalized = 0f
                     });
+
+                    if (inputUI != null)
+                    {
+                        inputUI.ResetBools();
+                    }
                     }
                 }
             }
@@ -82,6 +91,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
             {
                 progressNormalized = (float)cuttingProgress/ cuttingItemSO.fillProgressMax
             });
+
+            if (inputUI != null)
+            {
+                inputUI.ChangeTapNumber(cuttingProgress);
+            }
 
             if(cuttingProgress >= cuttingItemSO.fillProgressMax){
                 ItemSO outputItemSO = GetOutputForInput(GetItemObject().GetItemObjectSO());

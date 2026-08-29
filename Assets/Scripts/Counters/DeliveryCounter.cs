@@ -446,12 +446,12 @@ public class DeliveryCounter : BaseCounter, IHasProgress
         {
             Debug.Log("Wrong Item!");
             wrongItemPenaltyApplied = true;
-            OnWrongItemDelivery?.Invoke(this, EventArgs.Empty);
             // Timer penalty
             // Sound triggers
             // Visual red outline on timer & shake?
             //timerValue -= wrongItemTimDeduction;
             wrongPenaltyUI.IncorrectItem();
+            OnWrongItemDelivery?.Invoke(this, EventArgs.Empty);
         }
     }
 
