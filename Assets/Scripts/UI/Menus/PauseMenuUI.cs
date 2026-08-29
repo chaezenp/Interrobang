@@ -120,6 +120,19 @@ public class PauseMenuUI : MonoBehaviour
 
     }
 
+    public void OnOptionsButtonPressed()
+    {
+        PauseMenu.SetActive(false);
+        OptionsMenu.SetActive(true);
+        OptionsFirstSelectedButton.FocusMenu();
+    }
+    public void OnOptionsBackButtonPressed()
+    {
+        OptionsMenu.SetActive(false);
+        PauseMenu.SetActive(true);
+        firstSelectedButtonPause.FocusMenu();
+    }
+
     public void OnControlsButtonPressed()
     {
         PauseMenu.SetActive(false);
