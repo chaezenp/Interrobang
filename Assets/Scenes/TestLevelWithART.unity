@@ -4488,7 +4488,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d380e76e2f3bfa340b41751c523fdd9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleMobileUI
-  pauseMenuUI: {fileID: 0}
+  pauseMenuUI: {fileID: 11738336}
+  gameOverUI: {fileID: 654259270}
   mobileUiPanel: {fileID: 1748425010}
   forceShowInEditor: 0
 --- !u!1 &209066794

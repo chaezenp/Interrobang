@@ -84,7 +84,10 @@ public class GameOverUI : MonoBehaviour
     }
     private void Show()
     {
+        if (TouchControlsUI != null)
+        {
         TouchControlsUI.SetActive(false);
+        }
         GameOverMenu.SetActive(true);
         firstSelectedButtonGameOver.FocusMenu();
     }
