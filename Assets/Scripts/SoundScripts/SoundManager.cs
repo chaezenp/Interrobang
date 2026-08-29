@@ -1,10 +1,12 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set;}
+
+    private const string SoundEffects_VOLUME_KEY = "SoundEffectsVolumeSetting";
+
 
     [SerializeField] private Camera MainCam;
     [SerializeField] private SoundClipsSO soundClipsSO;
@@ -15,6 +17,7 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        volume = PlayerPrefs.GetFloat(SoundEffects_VOLUME_KEY, 0.1f);    
         ChangeInVolume();
     }
 
@@ -66,15 +69,26 @@ public class SoundManager : MonoBehaviour
         {
             volume = 1f;
         }
-        ChangeInVolume();
+        
+        SaveAndApply();
     }
+
     public void ChangeVolumeDOWN()
     {
         volume -= .1f; 
-        if (volume < 0)
+        if (volume < 0f)
         {
             volume = 0f;
         }
+
+        SaveAndApply();
+    }
+
+    private void SaveAndApply()
+    {
+        // Save the setting immediately to the device
+        PlayerPrefs.SetFloat(SoundEffects_VOLUME_KEY, volume);
+        PlayerPrefs.Save(); 
         ChangeInVolume();
     }
 
