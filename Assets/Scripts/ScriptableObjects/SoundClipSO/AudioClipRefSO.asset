@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51c1fc4724f9b0c47aae02cda0009634, type: 3}
+  m_Name: AudioClipRefSO
+  m_EditorClassIdentifier: Assembly-CSharp::SoundClipsSO
+  chop: {fileID: 0}
+  riceCooker: []
+  deliverySuccess: {fileID: 0}
+  deliveryFail: {fileID: 8300000, guid: a924e94937cec1443aa281d98e47058d, type: 3}
+  playerFootstep:
+  - {fileID: 8300000, guid: 51f2acf139a982344a2f1ddf2463253f, type: 3}
+  touristFootstep:
+  - {fileID: 8300000, guid: 0013e5a58e19f9442b9295a1e944a379, type: 3}
+  objectPlaceDown: {fileID: 0}
+  objectPickup: {fileID: 0}
+  trash: {fileID: 0}

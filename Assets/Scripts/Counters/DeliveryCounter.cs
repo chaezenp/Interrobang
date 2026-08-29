@@ -4,6 +4,10 @@ using UnityEngine;
 public class DeliveryCounter : BaseCounter, IHasProgress
 {
     public event EventHandler <IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+    public static event EventHandler OnCorrectItemDelivery;
+    public static event EventHandler OnWrongItemDelivery;
+
+    public static DeliveryCounter Instance {get; private set; }
 
 
     [Header("Requests")]
@@ -128,6 +132,13 @@ public class DeliveryCounter : BaseCounter, IHasProgress
 
     public override void InteractHold(PlayerController playerController)
     {
+        ItemSO itemSO = playerController.GetItemObject().GetItemObjectSO();
+
+        if (currentItemRequest != null && !currentItemRequest.itemSOList.Contains(itemSO))
+        {
+            HandleWrongItemPenalty();
+            return;
+        }
         isPlayerHoldingButtonDown = true;
     }
 
@@ -139,6 +150,11 @@ public class DeliveryCounter : BaseCounter, IHasProgress
             wrongItemPenaltyApplied = false;
             ResetProgress();
         }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
     private void Start()
@@ -306,6 +322,12 @@ public class DeliveryCounter : BaseCounter, IHasProgress
 
         ItemSO itemSO = PC.GetItemObject().GetItemObjectSO();
 
+        if (!itemSO.isHoldItem)
+        {
+            InteractHoldRelease(PC);
+            return;
+        }
+
         holdProgressTimer += Time.deltaTime;
         float testforHold = holdProgressTimer/itemSO.targetGoal;
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
@@ -372,6 +394,7 @@ public class DeliveryCounter : BaseCounter, IHasProgress
         timerFinalized = true;
         if (requestUI != null) requestUI.ShowSuccess();
         OnRequestSucceeded?.Invoke();
+        OnCorrectItemDelivery?.Invoke(this, EventArgs.Empty);
 
         successfulDeliveries++;
         if (!isReadyToLeave && successfulDeliveries >= deliveriesUntilLeave)
@@ -382,6 +405,8 @@ public class DeliveryCounter : BaseCounter, IHasProgress
 
         isPlayerHoldingButtonDown = false;
         currentItemRequest = null;
+
+
 
         PC.GetItemObject().DestroySelf();
         Debug.Log("Item Delivered!");
@@ -421,6 +446,7 @@ public class DeliveryCounter : BaseCounter, IHasProgress
         {
             Debug.Log("Wrong Item!");
             wrongItemPenaltyApplied = true;
+            OnWrongItemDelivery?.Invoke(this, EventArgs.Empty);
             // Timer penalty
             // Sound triggers
             // Visual red outline on timer & shake?

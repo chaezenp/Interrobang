@@ -9,9 +9,12 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private CanvasGroup MainMenuCanvasGroup;
     [SerializeField] private GameObject CreditsUI;
     [SerializeField] private CanvasGroup CreditsCanvasGroup;
+    [SerializeField] private GameObject OptionsUI;
+    [SerializeField] private CanvasGroup OptionsCanvasGroup;
     [SerializeField] private FirstSelectedButton firstSelectedButtonMainMenu;
     [SerializeField] private Button playButton;
     [SerializeField] private Button OptionsButton;
+    [SerializeField] private Button OptionsBackButton;
     [SerializeField] private Button QuitButton;
     [SerializeField] private Button CreditsButton;
     [SerializeField] private Button CreditsBackButton;
@@ -26,6 +29,7 @@ public class MainMenuUI : MonoBehaviour
     private float creditsTargetWeight = 1f;
     private float MMtargetWeight = 0f;
     private bool inCredits = false;
+    private bool inOptions = false;
 
     private void Awake()
     {
@@ -37,6 +41,21 @@ public class MainMenuUI : MonoBehaviour
         OptionsButton.onClick.AddListener(() =>
         {
             // Click
+            SetAnimationState(true);
+            inOptions = true;
+            Hide();
+            ShowOptions();
+            firstSelectedButtonMainMenu.FocusCreditsMenu(OptionsBackButton);
+            
+        });;
+        OptionsBackButton.onClick.AddListener(() =>
+        {
+            // Click
+            SetAnimationState(false);
+            inOptions = false;
+            HideOptions();
+            Show();
+            firstSelectedButtonMainMenu.FocusCreditsMenu(playButton);
             
         });;
         CreditsButton.onClick.AddListener(() =>
@@ -68,6 +87,7 @@ public class MainMenuUI : MonoBehaviour
         if (blurVolume != null) blurVolume.weight = 0f;
 
         HideCredits();
+        HideOptions();
         Show();
         
         firstSelectedButtonMainMenu.FocusMenu();
@@ -86,7 +106,18 @@ public class MainMenuUI : MonoBehaviour
             }
         }
         
-        if (blurVolume != null && blurVolume.weight != MMtargetWeight && !inCredits)
+        if (blurVolume != null && blurVolume.weight != creditsTargetWeight && inOptions)
+        {            
+            float currentWeight = Mathf.MoveTowards(blurVolume.weight, creditsTargetWeight, fadeSpeed * Time.unscaledDeltaTime);
+            
+            blurVolume.weight = currentWeight;
+            if (OptionsCanvasGroup != null)
+            {
+                OptionsCanvasGroup.alpha = currentWeight;
+            }
+        }
+        
+        if (blurVolume != null && blurVolume.weight != MMtargetWeight && !inCredits && !inOptions)
         {
             float currentWeight = Mathf.MoveTowards(blurVolume.weight, MMtargetWeight, fadeSpeed * Time.unscaledDeltaTime);
             
@@ -106,6 +137,10 @@ public class MainMenuUI : MonoBehaviour
     {
         CreditsUI.SetActive(true);
     }
+    private void ShowOptions()
+    {
+        OptionsUI.SetActive(true);
+    }
 
     private void Hide()
     {
@@ -114,6 +149,10 @@ public class MainMenuUI : MonoBehaviour
     private void HideCredits()
     {
         CreditsUI.SetActive(false);
+    }
+    private void HideOptions()
+    {
+        OptionsUI.SetActive(false);
     }
 
 
